@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Overseer;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -41,6 +41,10 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{packages}/'.$this->environment.'/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
+
+        // Bounded Context Services
+        $loader->load(__DIR__ . '/Shared/Infrastructure/Symfony/DependencyInjection/services.yaml');
+        $loader->load(__DIR__ . '/User/Infrastructure/Symfony/DependencyInjection/services.yaml');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
@@ -50,5 +54,8 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/{routes}/'.$this->environment.'/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
+
+        // Bounded Context Routes
+        $routes->import(__DIR__ . '/User/Infrastructure/Http/routing.yaml');
     }
 }

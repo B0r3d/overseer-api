@@ -1,0 +1,25 @@
+services:
+
+###############################  ALIASES  ###############################
+    overseer.shared.command_bus: '@Overseer\Shared\Infrastructure\Bus\Command\InMemoryCommandBus'
+    overseer.shared.event_bus: '@Overseer\Shared\Infrastructure\Bus\Event\InMemoryEventBus'
+    overseer.shared.query_bus: '@Overseer\Shared\Infrastructure\Bus\Query\InMemoryQueryBus'
+
+###############################  SERVICES  ###############################
+    Overseer\Shared\Infrastructure\Bus\Command\InMemoryCommandBus:
+        arguments: ['@Overseer\Shared\Infrastructure\Bus\Command\SimpleCommandHandlerLocator']
+
+    Overseer\Shared\Infrastructure\Bus\Command\SimpleCommandHandlerLocator:
+        arguments: [!tagged 'command_handler']
+
+    Overseer\Shared\Infrastructure\Bus\Event\InMemoryEventBus:
+        arguments: ['@Overseer\Shared\Infrastructure\Bus\Event\SimpleSubscriberLocator']
+
+    Overseer\Shared\Infrastructure\Bus\Event\SimpleSubscriberLocator:
+        arguments: [!tagged 'domain_events_subscriber']
+
+    Overseer\Shared\Infrastructure\Bus\Query\InMemoryQueryBus:
+        arguments: ['@Overseer\Shared\Infrastructure\Bus\Query\SimpleQueryHandlerLocator']
+
+    Overseer\Shared\Infrastructure\Bus\Query\SimpleQueryHandlerLocator:
+        arguments: [!tagged 'query_handler']

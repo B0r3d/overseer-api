@@ -1,0 +1,16 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Overseer\User\Domain\Entity\User" table="users">
+
+        <id name="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+        <embedded name="uuid" class="Overseer\User\Domain\ValueObject\UserId" column-prefix="uuid_" />
+        <embedded name="username" class="Overseer\User\Domain\ValueObject\Username" column-prefix="username_" />
+        <embedded name="email" class="Overseer\User\Domain\ValueObject\Email" column-prefix="email_" />
+        <embedded name="password" class="Overseer\User\Domain\ValueObject\Password" column-prefix="password_" />
+    </entity>
+</doctrine-mapping>

@@ -1,0 +1,24 @@
+parameters:
+    pepper: '%env(PEPPER)%'
+    cost: '%env(COST)%'
+services:
+    overseer.user.doctrine_user_write_model: '@Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserWriteModel'
+    overseer.user.doctrine_user_read_model: '@Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserReadModel'
+    overseer.user.bcrypt_password_encoder: '@Overseer\User\Application\UserPasswordEncoder\BcryptPasswordEncoder'
+
+    Overseer\User\Infrastructure\Http\Action\RegisterUser:
+        public: true
+        arguments: ['@overseer.shared.command_bus', '@jms_serializer']
+
+    Overseer\User\Application\Command\RegisterUser\RegisterUserHandler:
+        arguments: ['@overseer.user.doctrine_user_write_model', '@overseer.user.doctrine_user_read_model', '@overseer.user.bcrypt_password_encoder', '@overseer.shared.event_bus']
+        tags: ['command_handler']
+
+    Overseer\User\Application\UserPasswordEncoder\BcryptPasswordEncoder:
+        arguments: ['%pepper%', '%cost%']
+
+    Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserWriteModel:
+        arguments: ['@doctrine.orm.entity_manager']
+
+    Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserReadModel:
+        arguments: ['@doctrine.orm.entity_manager']

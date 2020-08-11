@@ -1,0 +1,4 @@
+api_v1_user_post:
+  path: /api/v1/user
+  methods: ['POST']
+  controller: Overseer\User\Infrastructure\Http\Action\RegisterUser

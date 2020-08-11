@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="Overseer\User\Domain\Dto\RegisterUserRequest">
+        <property name="username"  type="string" since-version="1.0"/>
+        <property name="email" type="string" since-version="1.0"/>
+        <property name="uuid" type="string" since-version="1.0"/>
+        <property name="password" type="string" since-version="1.0"/>
+    </class>
+</serializer>

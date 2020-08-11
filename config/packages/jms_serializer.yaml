@@ -1,0 +1,11 @@
+jms_serializer:
+    visitors:
+        xml_serialization:
+            format_output: '%kernel.debug%'
+    metadata:
+        auto_detection: false
+        directories:
+            user_dto:
+                namespace_prefix: "Overseer\\User\\Domain\\Dto"
+                path: "%kernel.root_dir%/User/Application/config/serializer/dto"
+
