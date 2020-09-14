@@ -6,7 +6,7 @@ namespace Overseer\User\Domain\ValueObject;
 
 use Overseer\Shared\Domain\ValueObject\StringValueObject;
 
-class Email extends StringValueObject
+final class Email extends StringValueObject
 {
     public function __construct(string $value)
     {

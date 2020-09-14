@@ -1,24 +1,61 @@
 parameters:
     pepper: '%env(PEPPER)%'
     cost: '%env(COST)%'
+    private_key: '%env(resolve:JWT_PRIVATE_KEY)%'
+    public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
+    jwt_access_token_lifetime: '%env(JWT_ACCESS_TOKEN_LIFETIME)%'
+    jwt_refresh_token_lifetime: '%env(JWT_REFRESH_TOKEN_LIFETIME)%'
+
 services:
     overseer.user.doctrine_user_write_model: '@Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserWriteModel'
     overseer.user.doctrine_user_read_model: '@Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserReadModel'
     overseer.user.bcrypt_password_encoder: '@Overseer\User\Application\UserPasswordEncoder\BcryptPasswordEncoder'
+    overseer.user.bearer_authenticator: '@Overseer\User\Infrastructure\Security\BearerAuthenticator'
+    overseer.user.firebase_jwt: '@Overseer\User\Infrastructure\Security\FirebaseJWT'
+    overseer.user.login_password_authenticator: '@Overseer\User\Infrastructure\Security\LoginPasswordAuthenticator'
 
+    # ENDPOINTS
     Overseer\User\Infrastructure\Http\Action\RegisterUser:
         public: true
         arguments: ['@overseer.shared.command_bus', '@jms_serializer']
 
+    Overseer\User\Infrastructure\Http\Action\Authenticate:
+        public: true
+        arguments: ['@jms_serializer', '@overseer.user.login_password_authenticator', '@overseer.user.firebase_jwt', '@overseer.user.doctrine_user_write_model']
+
+    Overseer\User\Infrastructure\Http\Action\RefreshToken:
+        public: true
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model', '@overseer.user.firebase_jwt']
+
+    Overseer\User\Infrastructure\Http\Action\Logout:
+        public: true
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model']
+
+    Overseer\User\Infrastructure\Http\Action\Me:
+        public: true
+        arguments: ['@overseer.user.doctrine_user_read_model']
+
+    # COMMAND HANDLERS
     Overseer\User\Application\Command\RegisterUser\RegisterUserHandler:
         arguments: ['@overseer.user.doctrine_user_write_model', '@overseer.user.doctrine_user_read_model', '@overseer.user.bcrypt_password_encoder', '@overseer.shared.event_bus']
         tags: ['command_handler']
 
-    Overseer\User\Application\UserPasswordEncoder\BcryptPasswordEncoder:
-        arguments: ['%pepper%', '%cost%']
-
+    # PERSISTENCE
     Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserWriteModel:
         arguments: ['@doctrine.orm.entity_manager']
 
     Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserReadModel:
         arguments: ['@doctrine.orm.entity_manager']
+
+    # SERVICES
+    Overseer\User\Application\UserPasswordEncoder\BcryptPasswordEncoder:
+        arguments: ['%pepper%', '%cost%']
+
+    Overseer\User\Infrastructure\Security\FirebaseJWT:
+        arguments: ['%private_key%', '%public_key%', '%jwt_refresh_token_lifetime%', '%jwt_access_token_lifetime%']
+
+    Overseer\User\Infrastructure\Security\BearerAuthenticator:
+        arguments: ['@overseer.user.firebase_jwt']
+
+    Overseer\User\Infrastructure\Security\LoginPasswordAuthenticator:
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.bcrypt_password_encoder']

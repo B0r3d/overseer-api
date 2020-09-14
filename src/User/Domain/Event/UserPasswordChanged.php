@@ -6,7 +6,7 @@ namespace Overseer\User\Domain\Event;
 
 use Overseer\Shared\Domain\Bus\Event\DomainEvent;
 
-class UserPasswordChanged extends DomainEvent
+final class UserPasswordChanged extends DomainEvent
 {
 
     static function eventName(): string

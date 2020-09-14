@@ -6,7 +6,7 @@ namespace Overseer\User\Domain\Dto;
 
 use Overseer\Shared\Domain\ValueObject\Uuid;
 
-class RegisterUserRequest
+final class RegisterUserRequest
 {
     private string $username;
     private string $email;

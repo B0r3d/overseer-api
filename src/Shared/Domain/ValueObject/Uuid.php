@@ -9,7 +9,7 @@ class Uuid
 {
     protected string $value;
 
-    public function __construct(string $value)
+    private function __construct(string $value)
     {
         $this->ensureIsValidUuid($value);
 

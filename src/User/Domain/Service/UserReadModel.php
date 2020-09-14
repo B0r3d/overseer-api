@@ -11,6 +11,7 @@ use Overseer\User\Domain\ValueObject\Username;
 
 interface UserReadModel
 {
-    function findOneByUsernameAndEmail(Username $username, Email $email): ?User;
+    function findOneByUsernameOrEmail(Username $username, Email $email): ?User;
     function findUser(UserId $userId): ?User;
+    function findOneByLogin(string $login): ?User;
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="Overseer\User\Domain\Dto\AuthenticateRequest">
+        <property name="login"  type="string" since-version="1.0"/>
+        <property name="password" type="string" since-version="1.0"/>
+    </class>
+</serializer>

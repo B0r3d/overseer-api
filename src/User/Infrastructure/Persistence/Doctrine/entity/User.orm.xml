@@ -12,5 +12,12 @@
         <embedded name="username" class="Overseer\User\Domain\ValueObject\Username" column-prefix="username_" />
         <embedded name="email" class="Overseer\User\Domain\ValueObject\Email" column-prefix="email_" />
         <embedded name="password" class="Overseer\User\Domain\ValueObject\Password" column-prefix="password_" />
+        <embedded name="roles" class="Overseer\User\Domain\ValueObject\Roles" column-prefix="roles_" />
+        <field name="createdAt" type="datetime" />
+        <one-to-many field="refreshTokens" target-entity="Overseer\User\Domain\Entity\RefreshToken" mapped-by="user" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
     </entity>
 </doctrine-mapping>

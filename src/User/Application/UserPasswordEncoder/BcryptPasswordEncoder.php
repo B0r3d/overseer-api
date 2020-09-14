@@ -7,7 +7,7 @@ namespace Overseer\User\Application\UserPasswordEncoder;
 use Overseer\User\Domain\Service\UserPasswordEncoder;
 use Overseer\User\Domain\ValueObject\Password;
 
-class BcryptPasswordEncoder implements UserPasswordEncoder
+final class BcryptPasswordEncoder implements UserPasswordEncoder
 {
     private string $pepper;
     private int $cost;
@@ -28,7 +28,6 @@ class BcryptPasswordEncoder implements UserPasswordEncoder
 
     function isValidPassword(Password $userPassword, Password $passwordToCheck): bool
     {
-        dump("Implement me");
-        die;
+        return password_verify($this->pepper . $passwordToCheck->value(), $userPassword->value());
     }
 }

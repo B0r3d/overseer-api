@@ -1,0 +1,30 @@
+security:
+    providers:
+        custom_user_provider:
+            id: overseer.user.doctrine_user_read_model
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        api:
+            pattern: ^/api
+            anonymous: true
+            provider: custom_user_provider
+            stateless: true
+            guard:
+                authenticators:
+                    - overseer.user.bearer_authenticator
+        main:
+            anonymous: ~
+
+    access_control:
+        - { path: ^/api/v1/user, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: ['POST'] }
+        - { path: ^/api/v1/ping, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/authenticate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/refresh-token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1, roles: ROLE_USER }

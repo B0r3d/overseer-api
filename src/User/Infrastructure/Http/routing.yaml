@@ -1,4 +1,23 @@
 api_v1_user_post:
-  path: /api/v1/user
-  methods: ['POST']
-  controller: Overseer\User\Infrastructure\Http\Action\RegisterUser
+    path: /api/v1/user
+    methods: ['POST']
+    controller: Overseer\User\Infrastructure\Http\Action\RegisterUser
+
+api_v1_user_authenticate:
+    path: /api/v1/authenticate
+    methods: ['POST']
+    controller: Overseer\User\Infrastructure\Http\Action\Authenticate
+
+api_v1_user_me:
+    path: /api/v1/user/me
+    controller: Overseer\User\Infrastructure\Http\Action\Me
+
+api_v1_refresh_token:
+    path: /api/v1/refresh-token
+    methods: ['POST']
+    controller: Overseer\User\Infrastructure\Http\Action\RefreshToken
+
+api_v1_logout:
+    path: /api/v1/logout
+    methods: ['POST']
+    controller: Overseer\User\Infrastructure\Http\Action\Logout

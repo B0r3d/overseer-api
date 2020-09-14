@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use \Overseer\User\Application\Command\RegisterUser\RegisterUser as RegisterUserCommand;
 
-class RegisterUser
+final class RegisterUser
 {
     private CommandBus $commandBus;
     private SerializerInterface $serializer;
@@ -24,7 +24,7 @@ class RegisterUser
         $this->serializer = $serializer;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         try {
             /** @var RegisterUserRequest $dto */
@@ -65,6 +65,8 @@ class RegisterUser
             ], 'json');
         } catch(\Throwable $throwable) {
             $statusCode = 500;
+            dump($throwable);
+            die;
             $content = $this->serializer->serialize([
                 'ok' => false,
                 'error_message' => 'Internal server error'

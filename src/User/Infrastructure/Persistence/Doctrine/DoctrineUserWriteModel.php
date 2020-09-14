@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Overseer\User\Domain\Entity\User;
 use Overseer\User\Domain\Service\UserWriteModel;
 
-class DoctrineUserWriteModel implements UserWriteModel
+final class DoctrineUserWriteModel implements UserWriteModel
 {
     private EntityManagerInterface $entityManager;
 

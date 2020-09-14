@@ -4,6 +4,6 @@
 namespace Overseer\User\Domain\Exception;
 
 
-class UserAlreadyExistsException extends \RuntimeException
+final class UserAlreadyExistsException extends \RuntimeException
 {
 }

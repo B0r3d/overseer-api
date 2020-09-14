@@ -4,9 +4,10 @@
 namespace Overseer;
 
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class Ping
+final class Ping extends AbstractController
 {
     public function __invoke(): Response
     {

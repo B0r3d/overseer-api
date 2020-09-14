@@ -16,7 +16,7 @@ use Overseer\User\Domain\ValueObject\Password;
 use Overseer\User\Domain\ValueObject\UserId;
 use Overseer\User\Domain\ValueObject\Username;
 
-class RegisterUserHandler implements CommandHandler
+final class RegisterUserHandler implements CommandHandler
 {
     private UserWriteModel $userWriteModel;
     private UserReadModel $userReadModel;
@@ -37,7 +37,7 @@ class RegisterUserHandler implements CommandHandler
         $username = new Username($command->username());
         $email = new Email($command->email());
 
-        $dbUser = $this->userReadModel->findOneByUsernameAndEmail($username, $email);
+        $dbUser = $this->userReadModel->findOneByUsernameOrEmail($username, $email);
 
         if($dbUser) {
             throw new UserAlreadyExistsException();

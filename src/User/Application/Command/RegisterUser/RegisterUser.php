@@ -6,7 +6,7 @@ namespace Overseer\User\Application\Command\RegisterUser;
 
 use Overseer\Shared\Domain\Bus\Command\Command;
 
-class RegisterUser implements Command
+final class RegisterUser implements Command
 {
     private string $username;
     private string $uuid;
