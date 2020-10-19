@@ -1,0 +1,4 @@
+api_v1_project_post:
+    path: /api/v1/project
+    methods: ['POST']
+    controller: Overseer\Project\Infrastructure\Http\Action\CreateProject

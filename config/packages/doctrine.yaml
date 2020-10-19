@@ -23,3 +23,14 @@ doctrine:
                 type: xml
                 dir: '%kernel.root_dir%/User/Infrastructure/Persistence/Doctrine/embeddable'
                 prefix: 'Overseer\User\Domain\ValueObject'
+
+            project_entity:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Project/Infrastructure/Persistence/Doctrine/entity'
+                prefix: 'Overseer\Project\Domain\Entity'
+            project_value_object:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Project/Infrastructure/Persistence/Doctrine/embeddable'
+                prefix: 'Overseer\Project\Domain\ValueObject'

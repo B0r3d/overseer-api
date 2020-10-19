@@ -7,6 +7,7 @@ parameters:
     jwt_refresh_token_lifetime: '%env(JWT_REFRESH_TOKEN_LIFETIME)%'
 
 services:
+    # Aliases
     overseer.user.doctrine_user_write_model: '@Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserWriteModel'
     overseer.user.doctrine_user_read_model: '@Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserReadModel'
     overseer.user.bcrypt_password_encoder: '@Overseer\User\Application\UserPasswordEncoder\BcryptPasswordEncoder'

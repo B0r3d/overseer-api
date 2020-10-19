@@ -1,0 +1,18 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Overseer\Project\Domain\Entity\Project" table="projects">
+
+        <id name="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+        <embedded name="uuid" class="Overseer\Project\Domain\ValueObject\ProjectId" column-prefix="uuid_" />
+        <embedded name="projectTitle" class="Overseer\Project\Domain\ValueObject\ProjectTitle" column-prefix="project_title_" />
+        <field name="description" type="text" nullable="true" />
+        <embedded name="slug" class="Overseer\Project\Domain\ValueObject\Slug" column-prefix="slug_" />
+        <embedded name="projectOwner" class="Overseer\Project\Domain\ValueObject\ProjectOwner" column-prefix="project_owner_" />
+        <field name="createdAt" type="datetime" />
+    </entity>
+</doctrine-mapping>

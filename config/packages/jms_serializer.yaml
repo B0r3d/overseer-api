@@ -9,3 +9,7 @@ jms_serializer:
                 namespace_prefix: "Overseer\\User\\Domain\\Dto"
                 path: "%kernel.root_dir%/User/Application/config/serializer/dto"
 
+            project_dto:
+                namespace_prefix: "Overseer\\Project\\Domain\\Dto"
+                path: "%kernel.root_dir%/Project/Application/config/serializer/dto"
+

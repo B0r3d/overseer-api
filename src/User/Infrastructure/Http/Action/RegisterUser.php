@@ -8,6 +8,7 @@ use JMS\Serializer\SerializerInterface;
 use Overseer\Shared\Domain\Bus\Command\CommandBus;
 use Overseer\User\Domain\Dto\RegisterUserRequest;
 use Overseer\User\Domain\Exception\UserAlreadyExistsException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -42,37 +43,35 @@ final class RegisterUser
             );
 
             $this->commandBus->dispatch($command);
-            $statusCode = 200;
-            $content = $this->serializer->serialize([
+            $statusCode = Response::HTTP_CREATED;
+            $response = [
                'ok' => true,
-               'data' => [
+               'payload' => [
                    'username' => $dto->username(),
                    'email' => $dto->email(),
                    'uuid' => $dto->uuid(),
                ],
-            ], 'json');
+            ];
         } catch(UserAlreadyExistsException $exception) {
-            $statusCode = 400;
-            $content = $this->serializer->serialize([
+            $statusCode = Response::HTTP_BAD_REQUEST;
+            $response = [
                 'ok' => false,
                 'error_message' => 'User already exists'
-            ], 'json');
+            ];
         } catch(BadRequestHttpException $exception) {
-            $statusCode = 400;
-            $content = $this->serializer->serialize([
+            $statusCode = Response::HTTP_BAD_REQUEST;
+            $response = [
                 'ok' => false,
                 'error_message' => 'Bad request'
-            ], 'json');
+            ];
         } catch(\Throwable $throwable) {
-            $statusCode = 500;
-            dump($throwable);
-            die;
-            $content = $this->serializer->serialize([
+            $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
+            $response = [
                 'ok' => false,
                 'error_message' => 'Internal server error'
-            ], 'json');
+            ];
         }
 
-        return new Response($content, $statusCode);
+        return new JsonResponse($response, $statusCode);
     }
 }

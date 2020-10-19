@@ -1,0 +1,23 @@
+services:
+    # ALIASES
+    overseer.project.doctrine_project_read_model: '@Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectReadModel'
+    overseer.project.doctrine_project_write_model: '@Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectWriteModel'
+
+    # ENDPOINTS
+    Overseer\Project\Infrastructure\Http\Action\CreateProject:
+        public: true
+        arguments: ['@jms_serializer', '@overseer.shared.command_bus']
+
+    # COMMAND HANDLERS
+    Overseer\Project\Application\Command\CreateProject\CreateProjectHandler:
+        arguments: ['@overseer.shared.event_bus', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+        tags: ['command_handler']
+
+    # PERSISTENCE
+    Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectReadModel:
+        arguments: ['@doctrine.orm.entity_manager']
+
+    Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectWriteModel:
+        arguments: ['@doctrine.orm.entity_manager']
+
+    # SERVICES
