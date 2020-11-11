@@ -2,3 +2,28 @@ api_v1_project_post:
     path: /api/v1/project
     methods: ['POST']
     controller: Overseer\Project\Infrastructure\Http\Action\CreateProject
+
+api_v1_project_member_invitation_post:
+    path: /api/v1/project/{_project_uuid}/project-member-invitation
+    methods: ['POST']
+    controller: Overseer\Project\Infrastructure\Http\Action\InviteNewMember
+
+api_v1_project_member_invitation_accept:
+    path: /api/v1/project/{_project_uuid}/project-member-invitation/{_invitation_uuid}/accept
+    methods: ['PUT']
+    controller: Overseer\Project\Infrastructure\Http\Action\AcceptInvitation
+
+api_v1_project_member_invitation_decline:
+    path: /api/v1/project/{_project_uuid}/project-member-invitation/{_invitation_uuid}/decline
+    methods: ['PUT']
+    controller: Overseer\Project\Infrastructure\Http\Action\DeclineInvitation
+
+api_v1_project_member_delete:
+    path: /api/v1/project/{_project_uuid}/project-member/{_project_member_uuid}
+    methods: ['DELETE']
+    controller: Overseer\Project\Infrastructure\Http\Action\RemoveProjectMember
+
+api_v1_project_member_invitation_cancel:
+    path: /api/v1/project/{_project_uuid}/project-member-invitation/{_invitation_uuid}
+    methods: ['DELETE']
+    controller: Overseer\Project\Infrastructure\Http\Action\CancelInvitation

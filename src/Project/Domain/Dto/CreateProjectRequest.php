@@ -48,6 +48,10 @@ final class CreateProjectRequest
             return false;
         }
 
+        if (isset($this->uuid) && !\Ramsey\Uuid\Uuid::isValid($this->uuid)) {
+            return false;
+        }
+
         return true;
     }
 }

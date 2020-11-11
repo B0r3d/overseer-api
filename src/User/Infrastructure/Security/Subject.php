@@ -22,10 +22,11 @@ final class Subject implements UserInterface, \JsonSerializable
 
     public static function fromUser(User $user): self
     {
+        $roles = array_unique(array_merge($user->roles()->toArray(), ['ROLE_USER']));
         return new self(
             $user->username()->value(),
             $user->password()->value(),
-            array_merge($user->roles()->toArray(), ['ROLE_USER']),
+            $roles
         );
     }
 

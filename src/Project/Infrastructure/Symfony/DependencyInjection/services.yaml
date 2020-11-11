@@ -8,10 +8,55 @@ services:
         public: true
         arguments: ['@jms_serializer', '@overseer.shared.command_bus']
 
+    Overseer\Project\Infrastructure\Http\Action\InviteNewMember:
+        public: true
+        arguments: ['@jms_serializer', '@overseer.shared.command_bus']
+
+    Overseer\Project\Infrastructure\Http\Action\AcceptInvitation:
+        public: true
+        arguments: ['@overseer.shared.command_bus']
+
+    Overseer\Project\Infrastructure\Http\Action\DeclineInvitation:
+        public: true
+        arguments: ['@overseer.shared.command_bus']
+
+    Overseer\Project\Infrastructure\Http\Action\RemoveProjectMember:
+        public: true
+        arguments: ['@overseer.shared.command_bus']
+
+    Overseer\Project\Infrastructure\Http\Action\CancelInvitation:
+        public: true
+        arguments: ['@overseer.shared.command_bus']
+
     # COMMAND HANDLERS
     Overseer\Project\Application\Command\CreateProject\CreateProjectHandler:
         arguments: ['@overseer.shared.event_bus', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
         tags: ['command_handler']
+
+    Overseer\Project\Application\Command\InviteMember\InviteMemberHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
+        tags: ['command_handler']
+
+    Overseer\Project\Application\Command\AcceptInvitation\AcceptInvitationHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
+        tags: ['command_handler']
+
+    Overseer\Project\Application\Command\DeclineInvitation\DeclineInvitationHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+        tags: ['command_handler']
+
+    Overseer\Project\Application\Command\RemoveMember\RemoveMemberHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+        tags: ['command_handler']
+
+    Overseer\Project\Application\Command\RemoveInvitation\RemoveInvitationHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+        tags: ['command_handler']
+
+    # EVENT SUBSCRIBERS
+    Overseer\Project\Application\Event\InvitationAcceptedSubscriber:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+        tags: ['domain_events_subscriber']
 
     # PERSISTENCE
     Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectReadModel:

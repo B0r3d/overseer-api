@@ -34,6 +34,18 @@ final class RegisterUserHandler implements CommandHandler
 
     public function __invoke(RegisterUser $command): void
     {
+//        $user = $this->userFactory->createNewUser(
+//            $command->username(),
+//            $command->email(),
+//            $command->uuid(),
+//            $command->password(),
+//        );
+//
+//        $domainEvents = $user->pullDomainEvents();
+//        $this->userWriteModel->save($user);
+//        $this->eventBus->publish(...$domainEvents);
+
+
         $username = new Username($command->username());
         $email = new Email($command->email());
 

@@ -10,14 +10,14 @@ final class InvitationStatus extends StringValueObject
 {
     const INVITED = 'invited';
     const ACCEPTED = 'accepted';
-    const REJECTED = 'rejected';
+    const DECLINED = 'declined';
 
     public static function getAllowedOptions(): array
     {
         return [
             self::INVITED,
             self::ACCEPTED,
-            self::REJECTED
+            self::DECLINED
         ];
     }
 

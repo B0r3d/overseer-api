@@ -42,7 +42,6 @@ final class Authenticate
             throw new BadRequestHttpException();
         }
 
-        // This will throw exception if something is wrong
         $user = $this->authenticator->authenticate($authRequest);
 
         $accessToken = $this->jwt->issueToken($user);

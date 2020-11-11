@@ -66,4 +66,16 @@ class ProjectMemberInvitation
     {
         return $this->respondedAt;
     }
+
+    public function accept()
+    {
+        $this->status = new InvitationStatus(InvitationStatus::ACCEPTED);
+        $this->respondedAt = new \DateTime();
+    }
+
+    public function decline()
+    {
+        $this->status = new InvitationStatus(InvitationStatus::DECLINED);
+        $this->respondedAt = new \DateTime();
+    }
 }

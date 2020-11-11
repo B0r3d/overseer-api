@@ -28,7 +28,7 @@ final class CreateProjectHandler implements CommandHandler
         $this->projectWriteModel = $projectWriteModel;
     }
 
-    public function __invoke(CreateProject $command)
+    public function __invoke(CreateProject $command): void
     {
         $projectTitle = new ProjectTitle($command->projectTitle());
         $projectId = ProjectId::fromString($command->projectId());

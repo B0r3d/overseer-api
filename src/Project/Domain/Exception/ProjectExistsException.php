@@ -6,7 +6,7 @@ namespace Overseer\Project\Domain\Exception;
 
 use Overseer\Project\Domain\ValueObject\Slug;
 
-class ProjectExistsException extends \RuntimeException
+final class ProjectExistsException extends \RuntimeException
 {
     public static function withSlug(Slug $slug)
     {

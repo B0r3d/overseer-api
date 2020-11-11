@@ -56,6 +56,6 @@ final class Roles
 
     public function toArray(): array
     {
-        return $this->array;
+        return array_unique($this->array);
     }
 }
