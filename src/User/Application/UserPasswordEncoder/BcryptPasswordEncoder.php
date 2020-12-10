@@ -5,7 +5,8 @@ namespace Overseer\User\Application\UserPasswordEncoder;
 
 
 use Overseer\User\Domain\Service\UserPasswordEncoder;
-use Overseer\User\Domain\ValueObject\Password;
+use Overseer\User\Domain\ValueObject\HashedPassword;
+use Overseer\User\Domain\ValueObject\PlainPassword;
 
 final class BcryptPasswordEncoder implements UserPasswordEncoder
 {
@@ -18,16 +19,20 @@ final class BcryptPasswordEncoder implements UserPasswordEncoder
         $this->cost = $cost;
     }
 
-    function encodePassword(string $password): Password
+    function encodePassword(PlainPassword $password): HashedPassword
     {
-        $seasonedPassword = $this->pepper . $password;
+        $seasonedPassword = $this->pepper . $password->getValue();
 
         $hash = password_hash($seasonedPassword, PASSWORD_BCRYPT, ['cost' => $this->cost]);
-        return new Password($hash);
+        return new HashedPassword($hash);
     }
 
-    function isValidPassword(Password $userPassword, Password $passwordToCheck): bool
+    function isValidPassword(HashedPassword $userPassword, PlainPassword $passwordToCheck): bool
     {
-        return password_verify($this->pepper . $passwordToCheck->value(), $userPassword->value());
+        $seasonedPassword = $this->pepper . $passwordToCheck->getValue();
+        return password_verify(
+            $seasonedPassword,
+            $userPassword->getValue()
+        );
     }
 }

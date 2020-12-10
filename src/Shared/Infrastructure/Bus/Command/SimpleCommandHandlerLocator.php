@@ -23,9 +23,9 @@ final class SimpleCommandHandlerLocator implements CommandHandlerLocator
 
     function locateHandler(Command $command): CommandHandler
     {
-        $handlerClass = get_class($command) . 'Handler';
+        /** @var CommandHandler $handler */
         foreach($this->commandHandlers as $handler) {
-            if(get_class($handler) === $handlerClass) {
+            if($handler->handles($command)) {
                 return $handler;
             }
         }
