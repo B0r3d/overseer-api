@@ -102,6 +102,9 @@ class Project extends AggregateRoot
 
         $instance->record(new ProjectCreated($uuid));
 
+        $projectMemberUsername = new ProjectMemberUsername($projectOwner->value());
+        $instance->addMember($projectMemberUsername);
+
         return $instance;
     }
 

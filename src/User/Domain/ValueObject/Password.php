@@ -6,6 +6,6 @@ namespace Overseer\User\Domain\ValueObject;
 
 use Overseer\Shared\Domain\ValueObject\StringValueObject;
 
-final class Password extends StringValueObject
+abstract class Password extends StringValueObject
 {
 }

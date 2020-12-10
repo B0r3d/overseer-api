@@ -28,6 +28,10 @@ services:
         public: true
         arguments: ['@overseer.shared.command_bus']
 
+    Overseer\Project\Infrastructure\Http\Action\GetProjects:
+        public: true
+        arguments: ['@overseer.shared.query_bus']
+
     # COMMAND HANDLERS
     Overseer\Project\Application\Command\CreateProject\CreateProjectHandler:
         arguments: ['@overseer.shared.event_bus', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
@@ -57,6 +61,11 @@ services:
     Overseer\Project\Application\Event\InvitationAcceptedSubscriber:
         arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
         tags: ['domain_events_subscriber']
+
+    # QUERY HANDLERS
+    Overseer\Project\Application\Query\GetProjects\GetProjectsHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+        tags: ['query_handler']
 
     # PERSISTENCE
     Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectReadModel:

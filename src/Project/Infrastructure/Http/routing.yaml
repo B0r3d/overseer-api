@@ -27,3 +27,8 @@ api_v1_project_member_invitation_cancel:
     path: /api/v1/project/{_project_uuid}/project-member-invitation/{_invitation_uuid}
     methods: ['DELETE']
     controller: Overseer\Project\Infrastructure\Http\Action\CancelInvitation
+
+api_v1_projects:
+    path: /api/v1/project
+    methods: ['GET']
+    controller: Overseer\Project\Infrastructure\Http\Action\GetProjects

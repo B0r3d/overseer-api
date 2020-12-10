@@ -5,6 +5,7 @@ parameters:
     public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
     jwt_access_token_lifetime: '%env(JWT_ACCESS_TOKEN_LIFETIME)%'
     jwt_refresh_token_lifetime: '%env(JWT_REFRESH_TOKEN_LIFETIME)%'
+    password_reset_token_lifetime: '%env(PASSWORD_RESET_TOKEN_LIFETIME)%'
 
 services:
     # Aliases
@@ -14,19 +15,23 @@ services:
     overseer.user.bearer_authenticator: '@Overseer\User\Infrastructure\Security\BearerAuthenticator'
     overseer.user.firebase_jwt: '@Overseer\User\Infrastructure\Security\FirebaseJWT'
     overseer.user.login_password_authenticator: '@Overseer\User\Infrastructure\Security\LoginPasswordAuthenticator'
+    overseer.user.regular_user_factory: '@Overseer\User\Application\Factory\RegularUserFactory'
+    overseer.user.customizable_password_reset_token_factory: '@Overseer\User\Application\Factory\CustomizablePasswordResetTokenFactory'
 
     # ENDPOINTS
-    Overseer\User\Infrastructure\Http\Action\RegisterUser:
+    Overseer\User\Infrastructure\Http\Action\RegisterUserAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@overseer.shared.command_bus', '@jms_serializer']
 
-    Overseer\User\Infrastructure\Http\Action\Authenticate:
+    Overseer\User\Infrastructure\Http\Action\AuthenticateUserAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@jms_serializer', '@overseer.user.login_password_authenticator', '@overseer.user.firebase_jwt', '@overseer.user.doctrine_user_write_model']
+        arguments: ['@overseer.user.login_password_authenticator', '@overseer.user.firebase_jwt', '@overseer.shared.cookie_manager']
 
-    Overseer\User\Infrastructure\Http\Action\RefreshToken:
+    Overseer\User\Infrastructure\Http\Action\RefreshTokenAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model', '@overseer.user.firebase_jwt']
+        arguments: ['@overseer.user.firebase_jwt', '@overseer.user.doctrine_user_read_model', '@overseer.shared.cookie_manager']
 
     Overseer\User\Infrastructure\Http\Action\Logout:
         public: true
@@ -36,10 +41,72 @@ services:
         public: true
         arguments: ['@overseer.user.doctrine_user_read_model']
 
+    Overseer\User\Infrastructure\Http\Action\ChangeUserPasswordAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\User\Infrastructure\Http\Action\UserExistsAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+        arguments: ['@overseer.user.doctrine_user_read_model']
+
+    Overseer\User\Infrastructure\Http\Action\PasswordResetAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\User\Infrastructure\Http\Action\CheckPasswordResetTokenAction:
+        arguments: ['@overseer.user.doctrine_user_read_model']
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\User\Infrastructure\Http\Action\NewPasswordAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
     # COMMAND HANDLERS
-    Overseer\User\Application\Command\RegisterUser\RegisterUserHandler:
-        arguments: ['@overseer.user.doctrine_user_write_model', '@overseer.user.doctrine_user_read_model', '@overseer.user.bcrypt_password_encoder', '@overseer.shared.event_bus']
+    Overseer\User\Application\Command\RegisterUserCommand\RegisterUserCommandHandler:
+        arguments: ['@Overseer\User\Application\Command\RegisterUserCommand\RegisterUserCommandValidator', '@overseer.user.regular_user_factory', '@overseer.user.doctrine_user_write_model', '@overseer.shared.event_bus']
         tags: ['command_handler']
+
+    Overseer\User\Application\Command\RegisterUserCommand\RegisterUserCommandValidator:
+        arguments: ['@overseer.user.doctrine_user_read_model']
+
+    Overseer\User\Application\Command\StartUserSessionCommand\StartUserSessionCommandHandler:
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model']
+        tags: ['command_handler']
+
+    Overseer\User\Application\Command\UpdateUserSessionCommand\UpdateUserSessionCommandHandler:
+        arguments: ['@Overseer\User\Application\Command\UpdateUserSessionCommand\UpdateUserSessionCommandValidator', '@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model', '@overseer.user.firebase_jwt']
+        tags: ['command_handler']
+
+    Overseer\User\Application\Command\UpdateUserSessionCommand\UpdateUserSessionCommandValidator:
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.firebase_jwt']
+
+    Overseer\User\Application\Command\ChangeUserPasswordCommand\ChangeUserPasswordCommandHandler:
+        arguments: ['@Overseer\User\Application\Command\ChangeUserPasswordCommand\ChangeUserPasswordCommandValidator', '@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model', '@overseer.user.bcrypt_password_encoder', '@overseer.user.firebase_jwt', '@overseer.shared.event_bus']
+        tags: ['command_handler']
+
+    Overseer\User\Application\Command\ChangeUserPasswordCommand\ChangeUserPasswordCommandValidator:
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.bcrypt_password_encoder']
+
+    Overseer\User\Application\Command\RequestPasswordResetCommand\RequestPasswordResetCommandHandler:
+        arguments: ['@Overseer\User\Application\Command\RequestPasswordResetCommand\RequestPasswordResetCommandValidator', '@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model', '@overseer.user.customizable_password_reset_token_factory', '@overseer.shared.event_bus']
+        tags: ['command_handler']
+
+    Overseer\User\Application\Command\RequestPasswordResetCommand\RequestPasswordResetCommandValidator:
+        arguments: ['@overseer.user.doctrine_user_read_model']
+
+    Overseer\User\Application\Command\NewPasswordCommand\NewPasswordCommandHandler:
+        arguments: ['@Overseer\User\Application\Command\NewPasswordCommand\NewPasswordCommandValidator', '@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model', '@overseer.user.bcrypt_password_encoder', '@overseer.shared.event_bus']
+        tags: ['command_handler']
+
+    Overseer\User\Application\Command\NewPasswordCommand\NewPasswordCommandValidator:
+        arguments: ['@overseer.user.doctrine_user_read_model']
+
+    # EVENT SUBSCRIBERS
+    Overseer\User\Application\Event\UserPasswordChangedSubscriber:
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model']
+        tags: ['domain_events_subscriber']
 
     # PERSISTENCE
     Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserWriteModel:
@@ -60,3 +127,9 @@ services:
 
     Overseer\User\Infrastructure\Security\LoginPasswordAuthenticator:
         arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.bcrypt_password_encoder']
+
+    Overseer\User\Application\Factory\RegularUserFactory:
+        arguments: ['@overseer.user.bcrypt_password_encoder']
+
+    Overseer\User\Application\Factory\CustomizablePasswordResetTokenFactory:
+        arguments: ['%password_reset_token_lifetime%']

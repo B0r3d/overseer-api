@@ -27,4 +27,7 @@ security:
         - { path: ^/api/v1/authenticate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/v1/refresh-token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/v1/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/user/user-exists, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/user/password-reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/user/new-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/v1, roles: ROLE_USER }

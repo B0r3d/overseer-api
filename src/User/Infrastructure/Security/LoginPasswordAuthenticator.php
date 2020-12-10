@@ -4,14 +4,13 @@
 namespace Overseer\User\Infrastructure\Security;
 
 
-use Overseer\User\Domain\Dto\AuthenticateRequest;
 use Overseer\User\Domain\Entity\User;
 use Overseer\User\Domain\Exception\InvalidCredentialsException;
-use Overseer\User\Domain\Exception\UserNotFoundException;
 use Overseer\User\Domain\Service\Authenticator;
 use Overseer\User\Domain\Service\UserPasswordEncoder;
 use Overseer\User\Domain\Service\UserReadModel;
-use Overseer\User\Domain\ValueObject\Password;
+use Overseer\User\Domain\ValueObject\AuthUser;
+use Overseer\User\Domain\ValueObject\PlainPassword;
 
 final class LoginPasswordAuthenticator implements Authenticator
 {
@@ -24,18 +23,13 @@ final class LoginPasswordAuthenticator implements Authenticator
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
-    function authenticate(AuthenticateRequest $authenticateRequest): User
+    public function authenticate(AuthUser $authUser): User
     {
-        $user = $this->userReadModel->findOneByLogin($authenticateRequest->login());
+        $user = $this->userReadModel->findOneByLogin($authUser->getLogin());
+        $passwordToCheck = new PlainPassword($authUser->getPassword());
 
-        if (!$user) {
-            throw new UserNotFoundException();
-        }
-
-        $passwordToCheck = new Password($authenticateRequest->password());
-
-        if (!$this->userPasswordEncoder->isValidPassword($user->password(), $passwordToCheck)) {
-            throw new InvalidCredentialsException($user->username());
+        if (!$user || !$this->userPasswordEncoder->isValidPassword($user->getPassword(), $passwordToCheck)) {
+            throw new InvalidCredentialsException();
         }
 
         return $user;

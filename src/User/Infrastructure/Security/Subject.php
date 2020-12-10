@@ -9,12 +9,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class Subject implements UserInterface, \JsonSerializable
 {
+    private string $id;
     private string $username;
     private string $password;
     private array $roles;
 
-    private function __construct(string $username, string $password, array $roles)
+    private function __construct(string $userId, string $username, string $password, array $roles)
     {
+        $this->id = $userId;
         $this->username = $username;
         $this->password = $password;
         $this->roles = $roles;
@@ -22,12 +24,18 @@ final class Subject implements UserInterface, \JsonSerializable
 
     public static function fromUser(User $user): self
     {
-        $roles = array_unique(array_merge($user->roles()->toArray(), ['ROLE_USER']));
+        $roles = array_unique(array_merge($user->getRoles()->toArray(), ['ROLE_USER']));
         return new self(
-            $user->username()->value(),
-            $user->password()->value(),
+            $user->getId()->value(),
+            $user->getUsername()->getValue(),
+            $user->getPassword()->getValue(),
             $roles
         );
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getRoles()

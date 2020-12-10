@@ -1,25 +1,60 @@
+parameters:
+    email_from: '%env(EMAIL_FROM)%'
 services:
 
 ###############################  ALIASES  ###############################
     overseer.shared.command_bus: '@Overseer\Shared\Infrastructure\Bus\Command\InMemoryCommandBus'
     overseer.shared.event_bus: '@Overseer\Shared\Infrastructure\Bus\Event\InMemoryEventBus'
     overseer.shared.query_bus: '@Overseer\Shared\Infrastructure\Bus\Query\InMemoryQueryBus'
+    overseer.shared.cookie_manager: '@Overseer\Shared\Infrastructure\Http\CookieManager'
+    overseer.shared.symfony_mailer: '@Overseer\Shared\Infrastructure\Mailer\SymfonyMailer'
+    overseer.shared.twig_email_factory: '@Overseer\Shared\Infrastructure\Mailer\TwigEmailFactory'
 
 ###############################  SERVICES  ###############################
+    # ENDPOINT
+    Overseer\Shared\Infrastructure\Http\AbstractAction:
+        abstract: true
+        calls:
+            - setCommonDependencies: ['@overseer.shared.command_bus', '@overseer.shared.query_bus', '@Overseer\Shared\Infrastructure\Http\ParamFetcherFactory']
+
+    # COMMAND
     Overseer\Shared\Infrastructure\Bus\Command\InMemoryCommandBus:
         arguments: ['@Overseer\Shared\Infrastructure\Bus\Command\SimpleCommandHandlerLocator']
 
     Overseer\Shared\Infrastructure\Bus\Command\SimpleCommandHandlerLocator:
         arguments: [!tagged 'command_handler']
 
+    # EVENT
     Overseer\Shared\Infrastructure\Bus\Event\InMemoryEventBus:
         arguments: ['@Overseer\Shared\Infrastructure\Bus\Event\SimpleSubscriberLocator']
 
     Overseer\Shared\Infrastructure\Bus\Event\SimpleSubscriberLocator:
         arguments: [!tagged 'domain_events_subscriber']
 
+    # QUERY
     Overseer\Shared\Infrastructure\Bus\Query\InMemoryQueryBus:
         arguments: ['@Overseer\Shared\Infrastructure\Bus\Query\SimpleQueryHandlerLocator']
 
     Overseer\Shared\Infrastructure\Bus\Query\SimpleQueryHandlerLocator:
         arguments: [!tagged 'query_handler']
+
+    # SERVICES
+    Overseer\Shared\Infrastructure\Http\ParamFetcherFactory: ~
+    Overseer\Shared\Infrastructure\Http\CookieManager: ~
+
+    Overseer\Shared\Infrastructure\Mailer\SymfonyMailer:
+        arguments: ['@mailer.mailer']
+
+    Overseer\Shared\Infrastructure\Mailer\TwigEmailFactory:
+        arguments: ['%email_from%', '@twig']
+
+    # SYMFONY EXCEPTION EVENT SUBSCRIBER
+    Overseer\Shared\Infrastructure\Symfony\EventSubscriber\KernelExceptionSubscriber:
+        arguments: ['%env(APP_ENV)%']
+        tags: ['kernel.event_subscriber']
+
+    # CLI
+    Overseer\Shared\Infrastructure\CLI\MailerSendEmailCommand:
+        arguments: ['@overseer.shared.symfony_mailer', '@overseer.shared.twig_email_factory']
+        tags:
+            - { name: 'console.command', command: 'overseer:shared:mailer-send-email' }

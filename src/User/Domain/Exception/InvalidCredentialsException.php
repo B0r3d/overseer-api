@@ -4,21 +4,13 @@
 namespace Overseer\User\Domain\Exception;
 
 
-use Overseer\User\Domain\ValueObject\Username;
+use Overseer\Shared\Domain\Exception\ValidationException;
 
-final class InvalidCredentialsException extends \RuntimeException
+final class InvalidCredentialsException extends ValidationException
 {
-    private Username $username;
-
-    public function __construct(string $username)
+    public function __construct()
     {
-        $this->username = new Username($username);
-        $message = 'Failed to login user with username "' . $username . '".';
+        $message = 'Invalid username or password.';
         parent::__construct($message);
-    }
-
-    public function username(): Username
-    {
-        return $this->username;
     }
 }

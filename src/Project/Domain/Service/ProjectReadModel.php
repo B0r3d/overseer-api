@@ -17,4 +17,6 @@ interface ProjectReadModel
     public function findByUuid(ProjectId $projectId): ?Project;
     public function findByInvitationIdWithGivenStatus(ProjectMemberInvitationId $invitationId, InvitationStatus $invitationStatus): ?Project;
     public function findByProjectMemberId(ProjectMemberId $projectMemberId): ?Project;
+    public function getProjects(string $issuedBy, int $page = 1, array $criteria = [], array $sort = [], $limit = 10): array;
+    public function count(string $issuedBy, array $criteria = []): int;
 }
