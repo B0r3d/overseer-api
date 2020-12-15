@@ -56,6 +56,7 @@ class User extends AggregateRoot
     public function changePassword(PlainPassword $password, UserPasswordEncoder $encoder, JsonWebToken $currentRefreshToken = null)
     {
         $this->password = $encoder->encodePassword($password);
+        $this->passwordResetToken = null;
 
         if ($currentRefreshToken) {
             $session = $this->getSessions()->findByRefreshToken($currentRefreshToken);

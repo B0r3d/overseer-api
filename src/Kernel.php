@@ -50,7 +50,7 @@ class Kernel extends BaseKernel
         // Bounded Context Services
         $loader->load(__DIR__ . '/Shared/Infrastructure/Symfony/DependencyInjection/services.yaml');
         $loader->load(__DIR__ . '/User/Infrastructure/Symfony/DependencyInjection/services.yaml');
-//        $loader->load(__DIR__ . '/Project/Infrastructure/Symfony/DependencyInjection/services.yaml');
+        $loader->load(__DIR__ . '/Project/Infrastructure/Symfony/DependencyInjection/services.yaml');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
@@ -63,6 +63,6 @@ class Kernel extends BaseKernel
 
         // Bounded Context Routes
         $routes->import(__DIR__ . '/User/Infrastructure/Http/routing.yaml');
-//        $routes->import(__DIR__ . '/Project/Infrastructure/Http/routing.yaml');
+        $routes->import(__DIR__ . '/Project/Infrastructure/Http/routing.yaml');
     }
 }

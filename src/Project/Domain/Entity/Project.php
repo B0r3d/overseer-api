@@ -4,12 +4,14 @@
 namespace Overseer\Project\Domain\Entity;
 
 
+use Overseer\Project\Domain\Collection\ApiKeys;
 use Overseer\Project\Domain\Event\InvitationAccepted;
 use Overseer\Project\Domain\Event\ProjectCreated;
 use Overseer\Project\Domain\Event\ProjectMemberWasAdded;
 use Overseer\Project\Domain\Event\UserInvitedToProject;
 use Overseer\Project\Domain\Exception\InvitationAlreadySentException;
 use Overseer\Project\Domain\Exception\UserAlreadyAProjectMemberException;
+use Overseer\Project\Domain\ValueObject\ApiKeyId;
 use Overseer\Project\Domain\ValueObject\Email;
 use Overseer\Project\Domain\ValueObject\InvitationStatus;
 use Overseer\Project\Domain\ValueObject\ProjectMemberId;
@@ -33,6 +35,8 @@ class Project extends AggregateRoot
     private \DateTime $createdAt;
     private iterable $invitations;
     private iterable $members;
+    private $apiKeys;
+    private ApiKeys $_apiKeys;
 
     public function id(): ?int
     {
@@ -59,7 +63,7 @@ class Project extends AggregateRoot
         return $this->slug;
     }
 
-    public function projectOwner(): ProjectOwner
+    public function getProjectOwner(): ProjectOwner
     {
         return $this->projectOwner;
     }
@@ -79,6 +83,16 @@ class Project extends AggregateRoot
         return $this->members;
     }
 
+    public function getApiKeys(): ApiKeys
+    {
+        if (isset($this->_apiKeys)) {
+            return $this->_apiKeys;
+        }
+
+        $this->_apiKeys = new ApiKeys(iterator_to_array($this->apiKeys));
+        return $this->_apiKeys;
+    }
+
     protected function __construct(ProjectId $uuid, ProjectTitle $projectTitle, Slug $slug, ProjectOwner $projectOwner, string $description = null)
     {
         $this->uuid = $uuid;
@@ -88,6 +102,7 @@ class Project extends AggregateRoot
         $this->description = $description;
         $this->id = null;
         $this->createdAt = new \DateTime();
+        $this->_apiKeys = new ApiKeys();
     }
 
     public static function create(ProjectId $uuid, ProjectTitle $projectTitle, Slug $slug, ProjectOwner $projectOwner, string $description = null): self
@@ -250,5 +265,29 @@ class Project extends AggregateRoot
                 break;
             }
         }
+    }
+
+    public function addApiKey(ApiKey $apiKey): void
+    {
+        $apiKeys = $this->getApiKeys();
+        $apiKeys[] = $apiKey;
+
+        $this->apiKeys = $apiKeys->getArrayCopy();
+        $this->_apiKeys = $apiKeys;
+    }
+
+    public function getApiKey(ApiKeyId $apiKeyId): ?ApiKey
+    {
+        $apiKeys = $this->getApiKeys();
+        return $apiKeys->getApiKey($apiKeyId);
+    }
+
+    public function removeApiKey(ApiKey $apiKey)
+    {
+        $apiKeys = $this->getApiKeys();
+        $apiKeys->removeApiKey($apiKey);
+
+        $this->apiKeys = $apiKeys->getArrayCopy();
+        $this->_apiKeys = $apiKeys;
     }
 }

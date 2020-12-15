@@ -16,6 +16,12 @@
             </cascade>
         </one-to-many>
 
+        <one-to-many field="apiKeys" target-entity="Overseer\Project\Domain\Entity\ApiKey" mapped-by="project" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>

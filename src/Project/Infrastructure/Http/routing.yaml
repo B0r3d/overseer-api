@@ -32,3 +32,13 @@ api_v1_projects:
     path: /api/v1/project
     methods: ['GET']
     controller: Overseer\Project\Infrastructure\Http\Action\GetProjects
+
+api_v1_create_api_key:
+    path: /api/v1/project/{_project_id}/api-key
+    methods: ['POST']
+    controller: Overseer\Project\Infrastructure\Http\Action\CreateApiKeyAction
+
+api_v1_remove_api_key:
+    path: /api/v1/project/{_project_id}/api-key/{_api_key_id}
+    methods: ['DELETE']
+    controller: Overseer\Project\Infrastructure\Http\Action\RemoveApiKeyAction
