@@ -20,17 +20,17 @@ class PaginatedQuery implements Query
     }
 
 
-    public function criteria(): array
+    public function getCriteria(): array
     {
         return $this->criteria;
     }
 
-    public function sort(): array
+    public function getSort(): array
     {
         return $this->sort;
     }
 
-    public function page(): int
+    public function getPage(): int
     {
         return $this->page;
     }

@@ -41,7 +41,7 @@ final class UserExistsAction extends AbstractAction
         }
 
         if (!$user) {
-            throw new NotFoundException();
+            throw new NotFoundException('User not found');
         }
 
         return $this->respondWithOk();

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ParamFetcherFactory
 {
-    public function createFetcher(Request $request)
+    public function createFetcher(Request $request): ParamFetcher
     {
         $query = $request->query->all();
         switch($request->headers->get('Content-Type')) {

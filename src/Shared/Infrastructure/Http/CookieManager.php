@@ -25,4 +25,13 @@ class CookieManager
     {
         setcookie($cookieName, '', time() - 3600);
     }
+
+    public function getCookie(string $name): ?string
+    {
+        if (!isset($_COOKIE[$name])) {
+            return null;
+        }
+
+        return $_COOKIE[$name];
+    }
 }

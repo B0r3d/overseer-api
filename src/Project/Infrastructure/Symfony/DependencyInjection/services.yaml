@@ -2,60 +2,105 @@ services:
     # ALIASES
     overseer.project.doctrine_project_read_model: '@Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectReadModel'
     overseer.project.doctrine_project_write_model: '@Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectWriteModel'
+    overseer.project.simple_api_key_factory: '@Overseer\Project\Application\SimpleApiKeyFactory'
 
     # ENDPOINTS
-    Overseer\Project\Infrastructure\Http\Action\CreateProject:
+    Overseer\Project\Infrastructure\Http\Action\CreateProjectAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@jms_serializer', '@overseer.shared.command_bus']
 
-    Overseer\Project\Infrastructure\Http\Action\InviteNewMember:
+    Overseer\Project\Infrastructure\Http\Action\InviteNewProjectMemberAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@jms_serializer', '@overseer.shared.command_bus']
 
-    Overseer\Project\Infrastructure\Http\Action\AcceptInvitation:
+    Overseer\Project\Infrastructure\Http\Action\AcceptInvitationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@overseer.shared.command_bus']
 
-    Overseer\Project\Infrastructure\Http\Action\DeclineInvitation:
+    Overseer\Project\Infrastructure\Http\Action\DeclineInvitationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@overseer.shared.command_bus']
 
-    Overseer\Project\Infrastructure\Http\Action\RemoveProjectMember:
+    Overseer\Project\Infrastructure\Http\Action\RemoveProjectMemberAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@overseer.shared.command_bus']
 
-    Overseer\Project\Infrastructure\Http\Action\CancelInvitation:
+    Overseer\Project\Infrastructure\Http\Action\CancelInvitationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@overseer.shared.command_bus']
 
-    Overseer\Project\Infrastructure\Http\Action\GetProjects:
+    Overseer\Project\Infrastructure\Http\Action\GetProjectsAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@overseer.shared.query_bus']
+
+    Overseer\Project\Infrastructure\Http\Action\CreateApiKeyAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Project\Infrastructure\Http\Action\RemoveApiKeyAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Project\Infrastructure\Http\Action\GetProjectAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
 
     # COMMAND HANDLERS
-    Overseer\Project\Application\Command\CreateProject\CreateProjectHandler:
-        arguments: ['@overseer.shared.event_bus', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+    Overseer\Project\Application\Command\CreateProjectCommand\CreateProjectCommandHandler:
+        arguments: ['@Overseer\Project\Application\Command\CreateProjectCommand\CreateProjectCommandValidator', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
         tags: ['command_handler']
 
-    Overseer\Project\Application\Command\InviteMember\InviteMemberHandler:
-        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
+    Overseer\Project\Application\Command\CreateProjectCommand\CreateProjectCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Project\Application\Command\InviteMemberCommand\InviteMemberCommandHandler:
+        arguments: ['@Overseer\Project\Application\Command\InviteMemberCommand\InviteMemberCommandValidator', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
         tags: ['command_handler']
 
-    Overseer\Project\Application\Command\AcceptInvitation\AcceptInvitationHandler:
-        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
+    Overseer\Project\Application\Command\InviteMemberCommand\InviteMemberCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Project\Application\Command\AcceptInvitationCommand\AcceptInvitationCommandHandler:
+        arguments: ['@Overseer\Project\Application\Command\AcceptInvitationCommand\AcceptInvitationCommandValidator', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
         tags: ['command_handler']
 
-    Overseer\Project\Application\Command\DeclineInvitation\DeclineInvitationHandler:
-        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+    Overseer\Project\Application\Command\AcceptInvitationCommand\AcceptInvitationCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Project\Application\Command\DeclineInvitationCommand\DeclineInvitationCommandHandler:
+        arguments: ['@Overseer\Project\Application\Command\DeclineInvitationCommand\DeclineInvitationCommandValidator', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
         tags: ['command_handler']
 
-    Overseer\Project\Application\Command\RemoveMember\RemoveMemberHandler:
-        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+    Overseer\Project\Application\Command\DeclineInvitationCommand\DeclineInvitationCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Project\Application\Command\RemoveProjectMemberCommand\RemoveProjectMemberCommandHandler:
+        arguments: ['@Overseer\Project\Application\Command\RemoveProjectMemberCommand\RemoveProjectMemberCommandValidator', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
         tags: ['command_handler']
 
-    Overseer\Project\Application\Command\RemoveInvitation\RemoveInvitationHandler:
-        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+    Overseer\Project\Application\Command\RemoveProjectMemberCommand\RemoveProjectMemberCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Project\Application\Command\CancelInvitationCommand\CancelInvitationCommandHandler:
+        arguments: ['@Overseer\Project\Application\Command\CancelInvitationCommand\CancelInvitationCommandValidator', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
         tags: ['command_handler']
+
+    Overseer\Project\Application\Command\CancelInvitationCommand\CancelInvitationCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Project\Application\Command\CreateApiKeyCommand\CreateApiKeyCommandHandler:
+        arguments: ['@Overseer\Project\Application\Command\CreateApiKeyCommand\CreateApiKeyCommandValidator', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.project.simple_api_key_factory', '@overseer.shared.event_bus']
+        tags: ['command_handler']
+
+    Overseer\Project\Application\Command\CreateApiKeyCommand\CreateApiKeyCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Project\Application\Command\RemoveApiKeyCommand\RemoveApiKeyCommandHandler:
+        arguments: ['@Overseer\Project\Application\Command\RemoveApiKeyCommand\RemoveApiKeyCommandValidator', '@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.event_bus']
+        tags: ['command_handler']
+
+    Overseer\Project\Application\Command\RemoveApiKeyCommand\RemoveApiKeyCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
 
     # EVENT SUBSCRIBERS
     Overseer\Project\Application\Event\InvitationAcceptedSubscriber:
@@ -63,7 +108,11 @@ services:
         tags: ['domain_events_subscriber']
 
     # QUERY HANDLERS
-    Overseer\Project\Application\Query\GetProjects\GetProjectsHandler:
+    Overseer\Project\Application\Query\GetProjectsQueryHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+        tags: ['query_handler']
+
+    Overseer\Project\Application\Query\GetProjectQueryHandler:
         arguments: ['@overseer.project.doctrine_project_read_model']
         tags: ['query_handler']
 
@@ -75,3 +124,5 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
 
     # SERVICES
+    Overseer\Project\Application\SimpleApiKeyFactory:
+        arguments: ['@overseer.shared.random_string_generator']

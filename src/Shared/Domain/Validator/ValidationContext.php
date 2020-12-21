@@ -14,6 +14,11 @@ class ValidationContext
         $this->fields = $fields;
     }
 
+    public function addField(Field $field)
+    {
+        $this->fields[] = $field;
+    }
+
     public function isValid(): bool
     {
         /** @var Field $field */

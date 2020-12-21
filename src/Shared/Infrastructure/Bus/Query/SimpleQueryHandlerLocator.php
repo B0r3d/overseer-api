@@ -22,9 +22,9 @@ final class SimpleQueryHandlerLocator implements QueryHandlerLocator
 
     function locateHandler(Query $query): QueryHandler
     {
-        $handlerClass = get_class($query) . 'Handler';
+        /** @var QueryHandler $handler */
         foreach($this->queryHandlers as $handler) {
-            if (get_class($handler) === $handlerClass) {
+            if ($handler->handles($query)) {
                 return $handler;
             }
         }

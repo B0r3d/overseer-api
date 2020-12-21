@@ -5,8 +5,9 @@ namespace Overseer\Project\Domain\Exception;
 
 
 use Overseer\Project\Domain\ValueObject\ProjectId;
+use Overseer\Shared\Domain\Exception\NotFoundException;
 
-final class ProjectNotFoundException extends \RuntimeException
+final class ProjectNotFoundException extends NotFoundException
 {
     public static function withUuid(ProjectId $projectId)
     {

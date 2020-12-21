@@ -16,14 +16,20 @@
             </cascade>
         </one-to-many>
 
-        <id name="id" type="integer">
-            <generator strategy="AUTO" />
-        </id>
-        <embedded name="uuid" class="Overseer\Project\Domain\ValueObject\ProjectId" column-prefix="uuid_" />
+        <one-to-many field="apiKeys" target-entity="Overseer\Project\Domain\Entity\ApiKey" mapped-by="project" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-one field="projectOwner" target-entity="Overseer\Project\Domain\Entity\ProjectMember">
+            <join-column name="project_member_id" referenced-column-name="id" />
+        </one-to-one>
+
+        <id name="id" type="string" length="191" />
         <embedded name="projectTitle" class="Overseer\Project\Domain\ValueObject\ProjectTitle" column-prefix="project_title_" />
         <field name="description" type="text" nullable="true" />
         <embedded name="slug" class="Overseer\Project\Domain\ValueObject\Slug" column-prefix="slug_" />
-        <embedded name="projectOwner" class="Overseer\Project\Domain\ValueObject\ProjectOwner" column-prefix="project_owner_" />
         <field name="createdAt" type="datetime" />
     </entity>
 </doctrine-mapping>

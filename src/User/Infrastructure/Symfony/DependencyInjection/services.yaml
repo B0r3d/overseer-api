@@ -33,13 +33,14 @@ services:
         public: true
         arguments: ['@overseer.user.firebase_jwt', '@overseer.user.doctrine_user_read_model', '@overseer.shared.cookie_manager']
 
-    Overseer\User\Infrastructure\Http\Action\Logout:
+    Overseer\User\Infrastructure\Http\Action\LogoutAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model']
+        arguments: ['@overseer.shared.cookie_manager']
 
-    Overseer\User\Infrastructure\Http\Action\Me:
+    Overseer\User\Infrastructure\Http\Action\MeAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
-        arguments: ['@overseer.user.doctrine_user_read_model']
 
     Overseer\User\Infrastructure\Http\Action\ChangeUserPasswordAction:
         parent: Overseer\Shared\Infrastructure\Http\AbstractAction
@@ -60,6 +61,10 @@ services:
         public: true
 
     Overseer\User\Infrastructure\Http\Action\NewPasswordAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\User\Infrastructure\Http\Action\GetUsersAction:
         parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
 
@@ -103,10 +108,23 @@ services:
     Overseer\User\Application\Command\NewPasswordCommand\NewPasswordCommandValidator:
         arguments: ['@overseer.user.doctrine_user_read_model']
 
+    Overseer\User\Application\Command\InvalidateRefreshTokenCommand\InvalidateRefreshTokenCommandHandler:
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model']
+        tags: ['command_handler']
+
     # EVENT SUBSCRIBERS
     Overseer\User\Application\Event\UserPasswordChangedSubscriber:
         arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model']
         tags: ['domain_events_subscriber']
+
+    # QUERY HANDLERS
+    Overseer\User\Application\Query\GetUserQueryHandler:
+        arguments: ['@overseer.user.doctrine_user_read_model']
+        tags: ['query_handler']
+
+    Overseer\User\Application\Query\GetUsersQueryHandler:
+        arguments: ['@overseer.user.doctrine_user_read_model']
+        tags: ['query_handler']
 
     # PERSISTENCE
     Overseer\User\Infrastructure\Persistence\Doctrine\DoctrineUserWriteModel:

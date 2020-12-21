@@ -1,0 +1,16 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Overseer\Project\Domain\Entity\ApiKey" table="api_keys">
+        <many-to-one field="project" target-entity="Overseer\Project\Domain\Entity\Project">
+            <join-column name="project_id" referenced-column-name="id" on-delete="CASCADE" />
+        </many-to-one>
+
+        <id name="id" type="string" length="191" />
+        <embedded name="expiryDate" class="Overseer\Shared\Domain\ValueObject\ExpiryDate" column-prefix="expiry_date_" />
+        <field name="createdAt" type="datetime" />
+        <field name="value" type="string" length="191" />
+    </entity>
+</doctrine-mapping>

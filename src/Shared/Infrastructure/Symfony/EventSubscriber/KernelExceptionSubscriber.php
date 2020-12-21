@@ -5,6 +5,7 @@ namespace Overseer\Shared\Infrastructure\Symfony\EventSubscriber;
 
 
 use Overseer\Shared\Domain\Exception\NotFoundException;
+use Overseer\Shared\Domain\Exception\UnauthenticatedException;
 use Overseer\Shared\Domain\Exception\UnauthorizedException;
 use Overseer\Shared\Domain\Exception\ValidationException;
 use Overseer\Shared\Infrastructure\Http\ErrorResponse;
@@ -66,8 +67,13 @@ final class KernelExceptionSubscriber implements EventSubscriberInterface
                 $errorCode = $throwable->getCode();
                 $message = $throwable->getMessage();
                 break;
-            case $throwable instanceof UnauthorizedException:
+            case $throwable instanceof UnauthenticatedException:
                 $statusCode = 401;
+                $errorCode = $throwable->getCode();
+                $message = $throwable->getMessage();
+                break;
+            case $throwable instanceof UnauthorizedException:
+                $statusCode = 403;
                 $errorCode = $throwable->getCode();
                 $message = $throwable->getMessage();
                 break;
