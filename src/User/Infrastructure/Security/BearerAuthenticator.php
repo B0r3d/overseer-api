@@ -4,14 +4,10 @@
 namespace Overseer\User\Infrastructure\Security;
 
 
-use Overseer\Shared\Domain\Exception\UnauthorizedException;
-use Overseer\Shared\Domain\Exception\ValidationException;
+use Overseer\Shared\Domain\Exception\UnauthenticatedException;
 use Overseer\Shared\Infrastructure\Http\ErrorResponse;
 use Overseer\User\Domain\Service\JWT;
-use Overseer\User\Domain\ValueObject\JsonWebToken;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -29,7 +25,7 @@ final class BearerAuthenticator extends AbstractGuardAuthenticator
 
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        throw new UnauthorizedException('No JWT provided.');
+        throw new UnauthenticatedException('No JWT provided.');
     }
 
     public function supports(Request $request)
@@ -50,8 +46,6 @@ final class BearerAuthenticator extends AbstractGuardAuthenticator
             $user = $userProvider->loadUserByUsername($credentials->getSubject());
             return Subject::fromUser($user);
         } catch(\Throwable $t) {
-            dump($t);
-            die;
             return null;
         }
 

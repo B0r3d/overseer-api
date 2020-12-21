@@ -4,15 +4,15 @@
 namespace Overseer\Project\Domain\Entity;
 
 
-use Overseer\Project\Domain\ValueObject\InvitationStatus;
+use Overseer\Project\Domain\Enum\InvitationStatus;
 use Overseer\Project\Domain\ValueObject\ProjectMemberInvitationId;
 use Overseer\Project\Domain\ValueObject\Username;
 
 class ProjectMemberInvitation
 {
     private Project $project;
-    private ?int $id;
-    private ProjectMemberInvitationId $uuid;
+    private string $id;
+    private ProjectMemberInvitationId $_id;
     private Username $username;
     private InvitationStatus $status;
     private \DateTime $invitedAt;
@@ -24,58 +24,58 @@ class ProjectMemberInvitation
         Username $username
     ) {
         $this->project = $project;
-        $this->uuid = $projectMemberInvitationId;
+        $this->id = $projectMemberInvitationId->value();
+        $this->_id = $projectMemberInvitationId;
         $this->username = $username;
-        $this->id = null;
-        $this->status = new InvitationStatus(InvitationStatus::INVITED);
+        $this->status = InvitationStatus::INVITED();
         $this->invitedAt = new \DateTime();
         $this->respondedAt = null;
     }
 
-    public function project(): Project
+    public function getProject(): Project
     {
         return $this->project;
     }
 
-    public function id(): ?int
+    public function getId(): ProjectMemberInvitationId
     {
-        return $this->id;
+        if (isset($this->_id)) {
+            return $this->_id;
+        }
+
+        $this->_id = ProjectMemberInvitationId::fromString($this->id);
+        return $this->_id;
     }
 
-    public function uuid(): ProjectMemberInvitationId
-    {
-        return $this->uuid;
-    }
-
-    public function username(): Username
+    public function getUsername(): Username
     {
         return $this->username;
     }
 
-    public function status(): InvitationStatus
+    public function getStatus(): InvitationStatus
     {
         return $this->status;
     }
 
-    public function invitedAt(): \DateTime
+    public function getInvitedAt(): \DateTime
     {
         return $this->invitedAt;
     }
 
-    public function respondedAt(): ?\DateTime
+    public function getRespondedAt(): ?\DateTime
     {
         return $this->respondedAt;
     }
 
     public function accept()
     {
-        $this->status = new InvitationStatus(InvitationStatus::ACCEPTED);
+        $this->status = InvitationStatus::ACCEPTED();
         $this->respondedAt = new \DateTime();
     }
 
     public function decline()
     {
-        $this->status = new InvitationStatus(InvitationStatus::DECLINED);
+        $this->status = InvitationStatus::DECLINED();
         $this->respondedAt = new \DateTime();
     }
 }

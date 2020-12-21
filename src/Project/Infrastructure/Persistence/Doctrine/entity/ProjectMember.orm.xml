@@ -8,10 +8,7 @@
             <join-column name="project_id" referenced-column-name="id" on-delete="CASCADE" />
         </many-to-one>
 
-        <id name="id" type="integer">
-            <generator strategy="AUTO" />
-        </id>
-        <embedded name="uuid" class="Overseer\Project\Domain\ValueObject\ProjectMemberId" column-prefix="uuid_" />
+        <id name="id" type="string" length="191" />
         <embedded name="username" class="Overseer\Project\Domain\ValueObject\ProjectMemberUsername" column-prefix="username_" />
         <field name="joinedAt" type="datetime" />
     </entity>

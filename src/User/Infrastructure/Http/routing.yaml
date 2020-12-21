@@ -10,7 +10,7 @@ api_v1_user_authenticate:
 
 api_v1_user_me:
     path: /api/v1/user/me
-    controller: Overseer\User\Infrastructure\Http\Action\Me
+    controller: Overseer\User\Infrastructure\Http\Action\MeAction
 
 api_v1_refresh_token:
     path: /api/v1/refresh-token
@@ -20,7 +20,7 @@ api_v1_refresh_token:
 api_v1_logout:
     path: /api/v1/logout
     methods: ['POST']
-    controller: Overseer\User\Infrastructure\Http\Action\Logout
+    controller: Overseer\User\Infrastructure\Http\Action\LogoutAction
 
 api_v1_change_user_password:
     path: /api/v1/user/{_user_id}/password
@@ -46,3 +46,8 @@ api_v1_new_password:
     path: /api/v1/user/new-password
     methods: ['PUT']
     controller: Overseer\User\Infrastructure\Http\Action\NewPasswordAction
+
+api_v1_users:
+    path: /api/v1/user
+    methods: ['GET']
+    controller: Overseer\User\Infrastructure\Http\Action\GetUsersAction

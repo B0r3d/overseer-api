@@ -41,7 +41,7 @@ class CreateApiKeyCommandHandler implements CommandHandler
     {
         $this->validator->validate($command);
 
-        $project = $this->projectReadModel->findByUuid(ProjectId::fromString($command->getProjectId()));
+        $project = $this->projectReadModel->findById(ProjectId::fromString($command->getProjectId()));
         if ($command->getExpiryDate()) {
             $datetime = new \DateTime();
             $datetime->setTimestamp($command->getExpiryDate());

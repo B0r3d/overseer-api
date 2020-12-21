@@ -26,7 +26,7 @@ class ParamFetcher
 
     public function getQueryParameter(string $parameterName, $defaultValue = null)
     {
-        if (isset($this->query)) {
+        if (isset($this->query[$parameterName])) {
             return $this->query[$parameterName];
         }
 

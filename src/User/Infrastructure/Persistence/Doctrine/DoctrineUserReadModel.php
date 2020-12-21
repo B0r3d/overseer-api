@@ -100,4 +100,43 @@ final class DoctrineUserReadModel implements UserReadModel, UserProviderInterfac
             ->getOneOrNullResult()
         ;
     }
+
+    public function getUsers(array $criteria = [], array $sort = [], int $limit = 10, int $offset = 0): array
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->select('u')
+            ->from(User::class, 'u')
+        ;
+
+        if (isset($criteria['search']) && $criteria['search']) {
+            $qb->where('u.username.value LIKE :search')
+                ->setParameter('search', '%' . $criteria['search'] . '%')
+            ;
+        }
+
+        return $qb->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function count(array $criteria = [])
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb->select('count(u.id) as user_count')
+            ->from(User::class, 'u')
+        ;
+
+        if (isset($criteria['search']) && $criteria['search']) {
+            $qb->where('u.username.value LIKE :search')
+                ->setParameter('search', '%' . $criteria['search'] . '%')
+            ;
+        }
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+        return $result['user_count'];
+    }
 }

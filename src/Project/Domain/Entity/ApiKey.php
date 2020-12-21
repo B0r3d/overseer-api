@@ -9,7 +9,7 @@ use Overseer\Shared\Domain\ValueObject\ExpiryDate;
 
 class ApiKey
 {
-    private ?string $id;
+    private string $id;
     private ApiKeyId $_id;
     private ?ExpiryDate $expiryDate;
     private \DateTime $createdAt;

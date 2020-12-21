@@ -18,4 +18,6 @@ interface UserReadModel
     public function findUserByEmail(Email $email);
     public function findUserByRefreshToken(JsonWebToken $token): ?User;
     public function findUserByPasswordResetToken(string $passwordResetTokenId): ?User;
+    public function getUsers(array $criteria = [], array $sort = [], int $limit = 10, int $offset = 0): array;
+    public function count(array $criteria = []);
 }

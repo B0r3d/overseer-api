@@ -46,7 +46,7 @@ class CreateApiKeyCommandValidator implements CommandValidator
             throw new ProjectNotFoundException($validationContext->getErrorMessage());
         }
 
-        $project = $this->projectReadModel->findByUuid(ProjectId::fromString($command->getProjectId()));
+        $project = $this->projectReadModel->findById(ProjectId::fromString($command->getProjectId()));
 
         $validationContext = new ValidationContext([
             new Field($command->getIssuedBy(), 'Unauthorized request', [

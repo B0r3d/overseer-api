@@ -131,6 +131,12 @@ class User extends AggregateRoot
         ));
     }
 
+    public function invalidateSession(Session $session)
+    {
+        $session->invalidate();
+        $this->_sessions->save($session);
+    }
+
     public function getId(): UserId
     {
         if (!isset($this->_id)) {

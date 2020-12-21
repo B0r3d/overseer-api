@@ -19,7 +19,7 @@ class ValidProject implements Specification
 
     public function isSatisfiedBy($value): bool
     {
-        $project = $this->projectReadModel->findByUuid(ProjectId::fromString($value));
+        $project = $this->projectReadModel->findById(ProjectId::fromString($value));
         return $project !== null;
     }
 }

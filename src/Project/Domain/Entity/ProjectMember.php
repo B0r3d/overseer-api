@@ -10,41 +10,41 @@ use Overseer\Project\Domain\ValueObject\ProjectMemberUsername;
 class ProjectMember
 {
     private Project $project;
-    private ?int $id;
-    private ProjectMemberId $uuid;
+    private string $id;
+    private ProjectMemberId $_id;
     private ProjectMemberUsername $username;
     private \DateTime $joinedAt;
 
     public function __construct(ProjectMemberId $projectMemberId, Project $project, ProjectMemberUsername $projectMemberUsername)
     {
         $this->project = $project;
-        $this->uuid = $projectMemberId;
+        $this->id = $projectMemberId->value();
+        $this->_id = $projectMemberId;
         $this->username = $projectMemberUsername;
-        $this->id = null;
         $this->joinedAt = new \DateTime();
     }
 
-    public function project(): Project
+    public function getProject(): Project
     {
         return $this->project;
     }
 
-    public function id(): ?int
+    public function getId(): ProjectMemberId
     {
-        return $this->id;
+        if (isset($this->_id)) {
+            return $this->_id;
+        }
+
+        $this->_id = ProjectMemberId::fromString($this->id);
+        return $this->_id;
     }
 
-    public function uuid(): ProjectMemberId
-    {
-        return $this->uuid;
-    }
-
-    public function username(): ProjectMemberUsername
+    public function getUsername(): ProjectMemberUsername
     {
         return $this->username;
     }
 
-    public function joinedAt(): \DateTime
+    public function getJoinedAt(): \DateTime
     {
         return $this->joinedAt;
     }

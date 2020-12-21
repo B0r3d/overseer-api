@@ -36,7 +36,7 @@ class RemoveApiKeyCommandHandler implements CommandHandler
     public function __invoke(RemoveApiKeyCommand $command)
     {
         $this->validator->validate($command);
-        $project = $this->projectReadModel->findByUuid(ProjectId::fromString($command->getProjectId()));
+        $project = $this->projectReadModel->findById(ProjectId::fromString($command->getProjectId()));
 
         $apiKey = $project->getApiKey(ApiKeyId::fromString($command->getApiKeyId()));
         $project->removeApiKey($apiKey);

@@ -24,7 +24,10 @@ class AuthorizedProjectMember implements Specification
         switch($this->projectMemberPermission) {
             case ProjectMemberPermission::REMOVE_API_KEY():
             case ProjectMemberPermission::CREATE_API_KEY():
-                return $value === $this->project->getProjectOwner()->getValue();
+            case ProjectMemberPermission::INVITE_NEW_MEMBERS():
+            case ProjectMemberPermission::REMOVE_PROJECT_MEMBERS():
+            case ProjectMemberPermission::CANCEL_INVITATION():
+                return $value === $this->project->getProjectOwner()->getUsername()->getValue();
         }
     }
 }
