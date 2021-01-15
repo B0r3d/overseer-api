@@ -22,6 +22,12 @@
             </cascade>
         </one-to-many>
 
+        <one-to-many field="errors" target-entity="Overseer\Project\Domain\Entity\Error" mapped-by="project" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
         <one-to-one field="projectOwner" target-entity="Overseer\Project\Domain\Entity\ProjectMember">
             <join-column name="project_member_id" referenced-column-name="id" />
         </one-to-one>

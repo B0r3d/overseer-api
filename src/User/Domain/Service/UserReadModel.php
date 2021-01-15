@@ -14,8 +14,8 @@ interface UserReadModel
 {
     public function findUser(UserId $userId): ?User;
     public function findOneByLogin(string $login): ?User;
-    public function findUserByUsername(Username $username);
-    public function findUserByEmail(Email $email);
+    public function findUserByUsername(Username $username): ?User;
+    public function findUserByEmail(Email $email): ?User;
     public function findUserByRefreshToken(JsonWebToken $token): ?User;
     public function findUserByPasswordResetToken(string $passwordResetTokenId): ?User;
     public function getUsers(array $criteria = [], array $sort = [], int $limit = 10, int $offset = 0): array;

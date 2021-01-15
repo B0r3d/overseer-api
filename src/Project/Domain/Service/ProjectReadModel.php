@@ -18,4 +18,8 @@ interface ProjectReadModel
     public function findByProjectMemberId(ProjectMemberId $projectMemberId): ?Project;
     public function getProjects(string $issuedBy, array $criteria = [], array $sort = [], $limit = 10, int $offset = 0): array;
     public function count(string $issuedBy, array $criteria = []): int;
+    public function findByApiKey(string $apiKey): ?Project;
+    public function getProjectErrors(Project $project, array $criteria = [], array $sort = [], int $limit = 10, int $offset = 0): array;
+    public function countProjectErrors(Project $project, array $criteria = []): int;
+    public function getErrorsSummary(Project $project, array $criteria = []): array;
 }

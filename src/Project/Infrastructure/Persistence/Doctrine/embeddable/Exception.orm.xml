@@ -1,0 +1,14 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <embeddable name="Overseer\Project\Domain\ValueObject\Exception">
+        <field name="class" type="string" length="191" />
+        <field name="errorCode" type="string" length="20" />
+        <field name="errorMessage" type="string" length="191" />
+        <field name="line" type="integer" />
+        <field name="file" type="string" length="191" />
+    </embeddable>
+
+</doctrine-mapping>

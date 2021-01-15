@@ -1,0 +1,16 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Overseer\Shared\Infrastructure\Bus\Event\EventEntity" table="events">
+        <id name="id" type="string" length="191" />
+        <field name="aggregateId" type="string" length="191" />
+        <field name="occurredAt" type="datetime" />
+        <field name="payload" type="array" />
+        <field name="status" type="string" length="40" />
+        <field name="class" type="string" length="191" />
+        <field name="errorMessage" type="string" length="191" />
+        <field name="lastProcessDate" type="datetime" nullable="true" />
+    </entity>
+</doctrine-mapping>

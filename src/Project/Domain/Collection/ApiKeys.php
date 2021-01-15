@@ -36,4 +36,16 @@ class ApiKeys extends \ArrayObject
             }
         }
     }
+
+    public function getApiKeyByValue(string $apiKey): ?ApiKey
+    {
+        /** @var ApiKey $key */
+        foreach ($this as $key) {
+            if ($key->getValue() === $apiKey) {
+                return $key;
+            }
+        }
+
+        return null;
+    }
 }

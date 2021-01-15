@@ -10,6 +10,7 @@ services:
     overseer.shared.symfony_mailer: '@Overseer\Shared\Infrastructure\Mailer\SymfonyMailer'
     overseer.shared.twig_email_factory: '@Overseer\Shared\Infrastructure\Mailer\TwigEmailFactory'
     overseer.shared.random_string_generator: '@Overseer\Shared\Application\RandomStringGenerator'
+    overseer.shared.database_asynchronous_event_bus: '@Overseer\Shared\Infrastructure\Bus\Event\DatabaseAsynchronousMessageBus'
 
 ###############################  SERVICES  ###############################
     # ENDPOINT
@@ -32,6 +33,9 @@ services:
     Overseer\Shared\Infrastructure\Bus\Event\SimpleSubscriberLocator:
         arguments: [!tagged 'domain_events_subscriber']
 
+    Overseer\Shared\Infrastructure\Bus\Event\DatabaseAsynchronousMessageBus:
+        arguments: ['@Overseer\Shared\Infrastructure\Bus\Event\EventRepository', '@Overseer\Shared\Infrastructure\Bus\Event\ProcessEventsCommandInvoker']
+
     # QUERY
     Overseer\Shared\Infrastructure\Bus\Query\InMemoryQueryBus:
         arguments: ['@Overseer\Shared\Infrastructure\Bus\Query\SimpleQueryHandlerLocator']
@@ -52,6 +56,14 @@ services:
     Overseer\Shared\Infrastructure\Mailer\TwigEmailFactory:
         arguments: ['%email_from%', '@twig']
 
+    Overseer\Shared\Infrastructure\Bus\Event\EventRepository:
+        arguments: ['@doctrine.orm.entity_manager']
+
+    Overseer\Shared\Infrastructure\Bus\Event\EventFactory: ~
+
+    Overseer\Shared\Infrastructure\Bus\Event\ProcessEventsCommandInvoker:
+        arguments: ['%kernel.project_dir%', 'overseer:shared:process-domain-events']
+
     # SYMFONY EXCEPTION EVENT SUBSCRIBER
     Overseer\Shared\Infrastructure\Symfony\EventSubscriber\KernelExceptionSubscriber:
         arguments: ['%env(APP_ENV)%']
@@ -62,3 +74,8 @@ services:
         arguments: ['@overseer.shared.symfony_mailer', '@overseer.shared.twig_email_factory']
         tags:
             - { name: 'console.command', command: 'overseer:shared:mailer-send-email' }
+
+    Overseer\Shared\Infrastructure\CLI\ProcessDomainEventsCommand:
+        arguments: ['@Overseer\Shared\Infrastructure\Bus\Event\EventRepository', '@Overseer\Shared\Infrastructure\Bus\Event\EventFactory', '@overseer.shared.event_bus', '@Overseer\Shared\Infrastructure\Bus\Event\ProcessEventsCommandInvoker']
+        tags:
+            - { name: 'console.command', command: 'overseer:shared:process-domain-events' }

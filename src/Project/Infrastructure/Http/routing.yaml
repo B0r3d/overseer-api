@@ -47,3 +47,23 @@ api_v1_project:
     path: /api/v1/project/{_project_id}
     methods: ['GET']
     controller: Overseer\Project\Infrastructure\Http\Action\GetProjectAction
+
+api_v1_error:
+    path: /api/v1/error
+    methods: ['POST']
+    controller: Overseer\Project\Infrastructure\Http\Action\CreateErrorAction
+
+api_v1_project_errors:
+    path: /api/v1/project/{_project_id}/errors
+    methods: ['GET']
+    controller: Overseer\Project\Infrastructure\Http\Action\GetProjectErrorsAction
+
+api_v1_project_error:
+    path: /api/v1/project/{_project_id}/errors/{_error_id}
+    methods: ['GET']
+    controller: Overseer\Project\Infrastructure\Http\Action\GetProjectErrorAction
+
+api_v1_project_errors_summary:
+    path: /api/v1/project/{_project_id}/errors-summary
+    methods: ['GET']
+    controller: Overseer\Project\Infrastructure\Http\Action\GetProjectErrorsSummaryAction

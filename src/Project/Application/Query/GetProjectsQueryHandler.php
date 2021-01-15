@@ -26,11 +26,19 @@ class GetProjectsQueryHandler implements QueryHandler
 
     public function __invoke(GetProjectsQuery $query)
     {
-        // TODO bind criteria and sort based on query
         $criteria = [];
+
+        if (!empty($query->getCriteria()['search'])) {
+            $criteria['search'] = $query->getCriteria()['search'];
+        }
+
+        if (!empty($query->getCriteria()['slug'])) {
+            $criteria['slug'] = $query->getCriteria()['slug'];
+        }
+
         $sort = [];
 
-        $offset = (1 - $query->getPage()) * 10;
+        $offset = ($query->getPage() - 1) * 10;
 
         $dbResult = $this->projectReadModel->getProjects(
             $query->getIssuedBy(),

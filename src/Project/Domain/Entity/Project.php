@@ -5,9 +5,11 @@ namespace Overseer\Project\Domain\Entity;
 
 
 use Overseer\Project\Domain\Collection\ApiKeys;
+use Overseer\Project\Domain\Collection\Errors;
 use Overseer\Project\Domain\Collection\Invitations;
 use Overseer\Project\Domain\Collection\ProjectMembers;
 use Overseer\Project\Domain\Enum\InvitationStatus;
+use Overseer\Project\Domain\Event\ErrorOccurred;
 use Overseer\Project\Domain\Event\InvitationAccepted;
 use Overseer\Project\Domain\Event\ProjectCreated;
 use Overseer\Project\Domain\Event\ProjectMemberWasAdded;
@@ -40,6 +42,8 @@ class Project extends AggregateRoot
     private ProjectMembers $_members;
     private $apiKeys;
     private ApiKeys $_apiKeys;
+    private $errors;
+    private Errors $_errors;
 
     public function getId(): ProjectId
     {
@@ -106,6 +110,16 @@ class Project extends AggregateRoot
         return $this->_apiKeys;
     }
 
+    public function getErrors(): Errors
+    {
+        if (isset($this->_errors)) {
+            return $this->_errors;
+        }
+
+        $this->_errors = new Errors(iterator_to_array($this->errors));
+        return $this->_errors;
+    }
+
     protected function __construct(ProjectId $uuid, ProjectTitle $projectTitle, Slug $slug, ProjectMemberUsername $projectOwner, string $description = null)
     {
         $this->id = $uuid->value();
@@ -116,6 +130,7 @@ class Project extends AggregateRoot
         $this->_apiKeys = new ApiKeys();
         $this->_members = new ProjectMembers();
         $this->createdAt = new \DateTime();
+        $this->_errors = new Errors();
 
         $projectOwner = new ProjectMember(
             ProjectMemberId::random(),
@@ -187,6 +202,18 @@ class Project extends AggregateRoot
             $this->id,
             $invitation->getUsername())
         );
+    }
+
+    public function addError(Error $error)
+    {
+        $this->errors[] = $error;
+        $errors = $this->getErrors();
+        $errors[] = $error;
+
+        $this->record(new ErrorOccurred(
+            $this->getId()->value(),
+            $error->getId()->value()
+        ));
     }
 
     public function addMember(ProjectMember $projectMember)

@@ -31,7 +31,7 @@ class GetUsersQueryHandler implements QueryHandler
             $query->getCriteria(),
             [],
             10,
-            (1 - $query->getPage()) * 10
+            ($query->getPage() - 1) * 10
         );
 
         $count = $this->userReadModel->count($query->getCriteria());

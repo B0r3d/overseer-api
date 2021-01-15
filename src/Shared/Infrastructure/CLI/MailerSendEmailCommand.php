@@ -10,10 +10,13 @@ use Overseer\Shared\Domain\Validator\Field;
 use Overseer\Shared\Domain\Validator\Specification\Email;
 use Overseer\Shared\Domain\Validator\Specification\MinLength;
 use Overseer\Shared\Domain\Validator\ValidationContext;
+use Overseer\Shared\Infrastructure\Bus\Event\ProcessEventsCommandInvoker;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class MailerSendEmailCommand extends Command
 {

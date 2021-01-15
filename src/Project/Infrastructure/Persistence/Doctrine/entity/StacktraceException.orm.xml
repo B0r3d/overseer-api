@@ -1,0 +1,17 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Overseer\Project\Domain\Entity\StacktraceException" table="stacktrace_exceptions">
+        <many-to-one field="error" target-entity="Overseer\Project\Domain\Entity\Error">
+            <join-column name="error_id" referenced-column-name="id" on-delete="CASCADE" />
+        </many-to-one>
+
+        <id name="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <embedded name="exception" class="Overseer\Project\Domain\ValueObject\Exception" column-prefix="exception_" />
+    </entity>
+</doctrine-mapping>

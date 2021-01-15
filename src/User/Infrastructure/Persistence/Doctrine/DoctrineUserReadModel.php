@@ -62,14 +62,14 @@ final class DoctrineUserReadModel implements UserReadModel, UserProviderInterfac
         return $class === User::class;
     }
 
-    public function findUserByUsername(Username $username)
+    public function findUserByUsername(Username $username): ?User
     {
         return $this->entityManager->getRepository(User::class)->findOneBy([
             'username.value' => $username->getValue(),
         ]);
     }
 
-    public function findUserByEmail(Email $email)
+    public function findfindUserByUserByEmail(Email $email)
     {
         return $this->entityManager->getRepository(User::class)->findOneBy([
             'email.value' => $email->getValue(),
@@ -138,5 +138,17 @@ final class DoctrineUserReadModel implements UserReadModel, UserProviderInterfac
 
         $result = $qb->getQuery()->getOneOrNullResult();
         return $result['user_count'];
+    }
+
+    public function findUserByEmail(Email $email): ?User
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+        return $qb->select('u')
+            ->from(User::class, 'u')
+            ->where('u.email.value = :email')
+            ->setParameter('email', $email->getValue())
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }

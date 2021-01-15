@@ -3,6 +3,8 @@ services:
     overseer.project.doctrine_project_read_model: '@Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectReadModel'
     overseer.project.doctrine_project_write_model: '@Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectWriteModel'
     overseer.project.simple_api_key_factory: '@Overseer\Project\Application\SimpleApiKeyFactory'
+    overseer.project.api_key_project_resolver: '@Overseer\Project\Application\ApiKeyProjectResolver'
+    overseer.project.simple_error_factory: '@Overseer\Project\Application\SimpleErrorFactory'
 
     # ENDPOINTS
     Overseer\Project\Infrastructure\Http\Action\CreateProjectAction:
@@ -42,6 +44,23 @@ services:
         public: true
 
     Overseer\Project\Infrastructure\Http\Action\GetProjectAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Project\Infrastructure\Http\Action\CreateErrorAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+        arguments: ['@overseer.project.api_key_project_resolver']
+
+    Overseer\Project\Infrastructure\Http\Action\GetProjectErrorsAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Project\Infrastructure\Http\Action\GetProjectErrorAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Project\Infrastructure\Http\Action\GetProjectErrorsSummaryAction:
         parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
 
@@ -102,6 +121,13 @@ services:
     Overseer\Project\Application\Command\RemoveApiKeyCommand\RemoveApiKeyCommandValidator:
         arguments: ['@overseer.project.doctrine_project_read_model']
 
+    Overseer\Project\Application\Command\CreateErrorCommand\CreateErrorCommandHandler:
+        arguments: ['@Overseer\Project\Application\Command\CreateErrorCommand\CreateErrorCommandValidator', '@overseer.project.doctrine_project_read_model', '@overseer.project.simple_error_factory', '@overseer.project.doctrine_project_write_model', '@overseer.shared.database_asynchronous_event_bus']
+        tags: ['command_handler']
+
+    Overseer\Project\Application\Command\CreateErrorCommand\CreateErrorCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
     # EVENT SUBSCRIBERS
     Overseer\Project\Application\Event\InvitationAcceptedSubscriber:
         arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
@@ -116,6 +142,18 @@ services:
         arguments: ['@overseer.project.doctrine_project_read_model']
         tags: ['query_handler']
 
+    Overseer\Project\Application\Query\GetProjectErrorsQueryHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+        tags: ['query_handler']
+
+    Overseer\Project\Application\Query\GetProjectErrorQueryHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+        tags: ['query_handler']
+
+    Overseer\Project\Application\Query\GetProjectErrorsSummaryQueryHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+        tags: ['query_handler']
+
     # PERSISTENCE
     Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectReadModel:
         arguments: ['@doctrine.orm.entity_manager']
@@ -126,3 +164,8 @@ services:
     # SERVICES
     Overseer\Project\Application\SimpleApiKeyFactory:
         arguments: ['@overseer.shared.random_string_generator']
+
+    Overseer\Project\Application\ApiKeyProjectResolver:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Project\Application\SimpleErrorFactory: ~
