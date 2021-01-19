@@ -40,4 +40,14 @@ final class UserPasswordResetRequested extends DomainEvent
 
         ];
     }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPasswordResetTokenId(): string
+    {
+        return $this->passwordResetTokenId;
+    }
 }

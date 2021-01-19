@@ -25,9 +25,13 @@ class EventRepository
         ], 1);
     }
 
-    public function findFailedEvents()
+    public function findFailedEvents(): array
     {
-
+        return $this->em->getRepository(EventEntity::class)->findBy([
+            'status' => EventStatus::FAILED()
+        ], [
+            'occurredAt' => 'ASC'
+        ], 1);
     }
 
     public function findUnprocessedEventsCount()
@@ -45,7 +49,15 @@ class EventRepository
 
     public function findFailedEventsCount()
     {
-
+        $qb = $this->em->createQueryBuilder();
+        $result = $qb->select('COUNT(ee.id) as event_count')
+            ->from(EventEntity::class, 'ee')
+            ->where('ee.status = :failed')
+            ->setParameter('failed', EventStatus::FAILED())
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+        return $result['event_count'];
     }
 
     public function findProcessedEventsCount()

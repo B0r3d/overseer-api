@@ -67,3 +67,22 @@ doctrine:
                 type: xml
                 dir: '%kernel.root_dir%/Project/Infrastructure/Persistence/Doctrine/enum'
                 prefix: 'Overseer\Project\Domain\Enum'
+
+            # Integration
+            integration_entity:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Integration/Infrastructure/Persistence/Doctrine/entity'
+                prefix: 'Overseer\Integration\Domain\Entity'
+
+            integration_value_object:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Integration/Infrastructure/Persistence/Doctrine/embeddable'
+                prefix: 'Overseer\Integration\Domain\ValueObject'
+
+#            integration_enums:
+#                is_bundle: false
+#                type: xml
+#                dir: '%kernel.root_dir%/Project/Infrastructure/Persistence/Doctrine/enum'
+#                prefix: 'Overseer\Project\Domain\Enum'

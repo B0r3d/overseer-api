@@ -12,6 +12,8 @@ use MyCLabs\Enum\Enum;
  * @method static ProjectMemberPermission INVITE_NEW_MEMBERS()
  * @method static ProjectMemberPermission REMOVE_PROJECT_MEMBERS()
  * @method static ProjectMemberPermission CANCEL_INVITATION()
+ * @method static ProjectMemberPermission MANAGE_TELEGRAM_INTEGRATION()
+ * @method static ProjectMemberPermission MANAGE_WEBHOOK_INTEGRATION()
  */
 class ProjectMemberPermission extends Enum
 {
@@ -20,4 +22,6 @@ class ProjectMemberPermission extends Enum
     private const INVITE_NEW_MEMBERS = 'invite_new_members';
     private const REMOVE_PROJECT_MEMBERS = 'remove_project_members';
     private const CANCEL_INVITATION = 'cancel_invitation';
+    private const MANAGE_TELEGRAM_INTEGRATION = 'manage_telegram_integration';
+    private const MANAGE_WEBHOOK_INTEGRATION = 'manage_webhook_integration';
 }

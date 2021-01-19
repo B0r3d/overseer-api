@@ -61,8 +61,30 @@ class ProcessDomainEventsCommand extends Command
             $lock->release();
             if ($this->eventRepository->findUnprocessedEventsCount() > 0) {
                 $this->invoker->invoke();
+                return;
             }
         }
 
+        if ($lock->acquire()) {
+            $events = $this->eventRepository->findFailedEvents();
+
+            /** @var EventEntity $event */
+            foreach($events as $event) {
+                $domainEvent = $this->eventFactory->recreateEvent($event);
+                try {
+                    $this->eventBus->publish($domainEvent);
+                    $event->markAsProcessed();
+                    $this->eventRepository->saveEvent($event);
+                } catch (\Exception $e) {
+                    $event->markAsFailed($e->getMessage());
+                    $this->eventRepository->saveEvent($event);
+                }
+            }
+
+            $lock->release();
+            if ($this->eventRepository->findFailedEventsCount() > 0) {
+                $this->invoker->invoke();
+            }
+        }
     }
 }

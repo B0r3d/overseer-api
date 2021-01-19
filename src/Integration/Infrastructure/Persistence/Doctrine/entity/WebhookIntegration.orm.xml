@@ -1,0 +1,20 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Overseer\Integration\Domain\Entity\WebhookIntegration" table="webhook_integrations">
+        <one-to-many field="messages" target-entity="Overseer\Integration\Domain\Entity\WebhookIntegrationMessage" mapped-by="integration">
+            <cascade>
+                <cascade-all />
+            </cascade>
+        </one-to-many>
+
+        <id name="id" type="string" length="191" />
+        <field name="projectId" type="string" length="191" />
+        <embedded name="url" class="Overseer\Shared\Domain\ValueObject\Url" column-prefix="url_" />
+        <embedded name="filters" class="Overseer\Integration\Domain\ValueObject\Filters" column-prefix="filters_" />
+        <field name="createdAt" type="datetime" />
+
+    </entity>
+</doctrine-mapping>

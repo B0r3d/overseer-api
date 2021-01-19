@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<serializer>
-    <class name="Overseer\Project\Domain\Dto\CreateProjectRequest">
-        <property name="uuid"  type="string" since-version="1.0"/>
-        <property name="project_title"  type="string" since-version="1.0"/>
-        <property name="project_slug" type="string" since-version="1.0"/>
-        <property name="description" type="string" since-version="1.0"/>
-    </class>
-</serializer>

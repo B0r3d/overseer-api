@@ -6,6 +6,7 @@ parameters:
     jwt_access_token_lifetime: '%env(JWT_ACCESS_TOKEN_LIFETIME)%'
     jwt_refresh_token_lifetime: '%env(JWT_REFRESH_TOKEN_LIFETIME)%'
     password_reset_token_lifetime: '%env(PASSWORD_RESET_TOKEN_LIFETIME)%'
+    new_password_page: '%env(NEW_PASSWORD_PAGE)%'
 
 services:
     # Aliases
@@ -115,6 +116,10 @@ services:
     # EVENT SUBSCRIBERS
     Overseer\User\Application\Event\UserPasswordChangedSubscriber:
         arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model']
+        tags: ['domain_events_subscriber']
+
+    Overseer\User\Application\Event\UserPasswordResetRequestedSubscriber:
+        arguments: ['@overseer.shared.symfony_mailer', '@overseer.shared.twig_email_factory', '%new_password_page%']
         tags: ['domain_events_subscriber']
 
     # QUERY HANDLERS

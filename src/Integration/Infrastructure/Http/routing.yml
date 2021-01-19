@@ -1,0 +1,59 @@
+api_v1_webhook_integration_post:
+    path: /api/v1/webhook-integration
+    methods: ['POST']
+    controller: Overseer\Integration\Infrastructure\Http\Action\CreateWebhookIntegrationAction
+
+api_v1_webhook_integration_patch:
+    path: /api/v1/webhook-integration/{_id}
+    methods: ['PATCH']
+    controller: Overseer\Integration\Infrastructure\Http\Action\UpdateWebhookIntegrationAction
+
+api_v1_webhook_integration_delete:
+    path: /api/v1/webhook-integration/{_id}
+    methods: ['DELETE']
+    controller: Overseer\Integration\Infrastructure\Http\Action\DeleteWebhookIntegrationAction
+
+api_v1_webhook_integration_get:
+    path: /api/v1/webhook-integration
+    methods: ['GET']
+    controller: Overseer\Integration\Infrastructure\Http\Action\GetWebhookIntegrationsAction
+
+api_v1_webhook_integration_webhook_integration_get:
+    path: /api/v1/webhook-integration/{_id}
+    methods: ['GET']
+    controller: Overseer\Integration\Infrastructure\Http\Action\GetWebhookIntegrationAction
+
+api_v1_webhook_integration_webhook_integration_message_get:
+    path: /api/v1/webhook-integration/{_id}/webhook-integration_message
+    methods: ['GET']
+    controller: Overseer\Integration\Infrastructure\Http\Action\GetWebhookIntegrationMessagesAction
+
+api_v1_telegram_integration_post:
+    path: /api/v1/telegram-integration
+    methods: ['POST']
+    controller: Overseer\Integration\Infrastructure\Http\Action\CreateTelegramIntegrationAction
+
+api_v1_telegram_integration_patch:
+    path: /api/v1/telegram-integration/{_id}
+    methods: ['PATCH']
+    controller: Overseer\Integration\Infrastructure\Http\Action\UpdateTelegramIntegrationAction
+
+api_v1_telegram_integration_delete:
+    path: /api/v1/telegram-integration/{_id}
+    methods: ['DELETE']
+    controller: Overseer\Integration\Infrastructure\Http\Action\DeleteTelegramIntegrationAction
+
+api_v1_telegram_integration_get:
+    path: /api/v1/telegram-integration
+    methods: ['GET']
+    controller: Overseer\Integration\Infrastructure\Http\Action\GetTelegramIntegrationsAction
+
+api_v1_telegram_integration_telegram_integration_get:
+    path: /api/v1/telegram-integration/{_id}
+    methods: ['GET']
+    controller: Overseer\Integration\Infrastructure\Http\Action\GetTelegramIntegrationAction
+
+api_v1_telegram_integration_webhook_integration_message_get:
+    path: /api/v1/telegram-integration/{_id}/telegram-integration_message
+    methods: ['GET']
+    controller: Overseer\Integration\Infrastructure\Http\Action\GetTelegramIntegrationMessagesAction

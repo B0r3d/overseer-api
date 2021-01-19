@@ -1,0 +1,178 @@
+parameters:
+    integration_max_attempts: 20
+services:
+    # ALIASES
+    overseer.integration.doctrine_webhook_integration_read_model: '@Overseer\Integration\Infrastructure\Persistence\Doctrine\DoctrineWebhookIntegrationReadModel'
+    overseer.integration.doctrine_webhook_integration_write_model: '@Overseer\Integration\Infrastructure\Persistence\Doctrine\DoctrineWebhookIntegrationWriteModel'
+    overseer.integration.webhook_message_sender: '@Overseer\Integration\Application\WebhookMessageSender'
+    overseer.integration.doctrine_telegram_integration_read_model: '@Overseer\Integration\Infrastructure\Persistence\Doctrine\DoctrineTelegramIntegrationReadModel'
+    overseer.integration.doctrine_telegram_integration_write_model: '@Overseer\Integration\Infrastructure\Persistence\Doctrine\DoctrineTelegramIntegrationWriteModel'
+    overseer.integration.telegram_message_sender: '@Overseer\Integration\Application\TelegramMessageSender'
+    overseer.integration.project_membership_checker: '@Overseer\Integration\Application\ProjectMembershipChecker'
+
+    # ENDPOINTS
+    Overseer\Integration\Infrastructure\Http\Action\CreateWebhookIntegrationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\UpdateWebhookIntegrationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\DeleteWebhookIntegrationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\GetWebhookIntegrationsAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\GetWebhookIntegrationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\GetWebhookIntegrationMessagesAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\CreateTelegramIntegrationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\UpdateTelegramIntegrationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\DeleteTelegramIntegrationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\GetTelegramIntegrationsAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\GetTelegramIntegrationAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Integration\Infrastructure\Http\Action\GetTelegramIntegrationMessagesAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    # COMMAND HANDLERS
+    Overseer\Integration\Application\Command\CreateWebhookIntegrationCommand\CreateWebhookIntegrationCommandHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.integration.doctrine_webhook_integration_write_model', '@Overseer\Integration\Application\Command\CreateWebhookIntegrationCommand\CreateWebhookIntegrationCommandValidator']
+        tags: ['command_handler']
+
+    Overseer\Integration\Application\Command\CreateWebhookIntegrationCommand\CreateWebhookIntegrationCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Integration\Application\Command\UpdateWebhookIntegrationCommand\UpdateWebhookIntegrationCommandHandler:
+        arguments: ['@overseer.integration.doctrine_webhook_integration_read_model', '@overseer.integration.doctrine_webhook_integration_write_model', '@Overseer\Integration\Application\Command\UpdateWebhookIntegrationCommand\UpdateWebhookIntegrationCommandValidator']
+        tags: ['command_handler']
+
+    Overseer\Integration\Application\Command\UpdateWebhookIntegrationCommand\UpdateWebhookIntegrationCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.integration.doctrine_webhook_integration_read_model']
+
+    Overseer\Integration\Application\Command\DeleteWebhookIntegrationCommand\DeleteWebhookIntegrationCommandHandler:
+        arguments: ['@overseer.integration.doctrine_webhook_integration_read_model', '@overseer.integration.doctrine_webhook_integration_write_model', '@Overseer\Integration\Application\Command\DeleteWebhookIntegrationCommand\DeleteWebhookIntegrationCommandValidator']
+        tags: ['command_handler']
+
+    Overseer\Integration\Application\Command\DeleteWebhookIntegrationCommand\DeleteWebhookIntegrationCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.integration.doctrine_webhook_integration_read_model']
+
+    Overseer\Integration\Application\Command\CreateTelegramIntegrationCommand\CreateTelegramIntegrationCommandHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.integration.doctrine_telegram_integration_write_model', '@Overseer\Integration\Application\Command\CreateTelegramIntegrationCommand\CreateTelegramIntegrationCommandValidator']
+        tags: ['command_handler']
+
+    Overseer\Integration\Application\Command\CreateTelegramIntegrationCommand\CreateTelegramIntegrationCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Integration\Application\Command\UpdateTelegramIntegrationCommand\UpdateTelegramIntegrationCommandHandler:
+        arguments: ['@overseer.integration.doctrine_telegram_integration_read_model', '@overseer.integration.doctrine_telegram_integration_write_model', '@Overseer\Integration\Application\Command\UpdateTelegramIntegrationCommand\UpdateTelegramIntegrationCommandValidator']
+        tags: ['command_handler']
+
+    Overseer\Integration\Application\Command\UpdateTelegramIntegrationCommand\UpdateTelegramIntegrationCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.integration.doctrine_telegram_integration_read_model']
+
+    Overseer\Integration\Application\Command\DeleteTelegramIntegrationCommand\DeleteTelegramIntegrationCommandHandler:
+        arguments: ['@overseer.integration.doctrine_telegram_integration_read_model', '@overseer.integration.doctrine_telegram_integration_write_model', '@Overseer\Integration\Application\Command\DeleteTelegramIntegrationCommand\DeleteTelegramIntegrationCommandValidator']
+        tags: ['command_handler']
+
+    Overseer\Integration\Application\Command\DeleteTelegramIntegrationCommand\DeleteTelegramIntegrationCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.integration.doctrine_telegram_integration_read_model']
+
+    # EVENT SUBSCRIBERS
+    Overseer\Integration\Application\Event\ErrorOccurredSubscriber:
+        arguments:
+            - '@overseer.project.doctrine_project_read_model'
+            - '@overseer.integration.doctrine_webhook_integration_read_model'
+            - '@overseer.integration.doctrine_webhook_integration_write_model'
+            - '@overseer.integration.webhook_message_sender'
+            - '@overseer.integration.doctrine_telegram_integration_read_model'
+            - '@overseer.integration.doctrine_telegram_integration_write_model'
+            - '@overseer.integration.telegram_message_sender'
+        tags: ['domain_events_subscriber']
+
+    # QUERY HANDLERS
+    Overseer\Integration\Application\Query\GetWebhookIntegrationsQueryHandler:
+        arguments: ['@overseer.integration.doctrine_webhook_integration_read_model', '@overseer.integration.project_membership_checker']
+        tags: ['query_handler']
+
+    Overseer\Integration\Application\Query\GetWebhookIntegrationQueryHandler:
+        arguments: ['@overseer.integration.doctrine_webhook_integration_read_model', '@overseer.integration.project_membership_checker']
+        tags: ['query_handler']
+
+    Overseer\Integration\Application\Query\GetWebhookIntegrationMessagesQueryHandler:
+        arguments: ['@overseer.integration.doctrine_webhook_integration_read_model', '@overseer.integration.project_membership_checker']
+        tags: ['query_handler']
+
+    Overseer\Integration\Application\Query\GetTelegramIntegrationsQueryHandler:
+        arguments: ['@overseer.integration.doctrine_telegram_integration_read_model', '@overseer.integration.project_membership_checker']
+        tags: ['query_handler']
+
+    Overseer\Integration\Application\Query\GetTelegramIntegrationQueryHandler:
+        arguments: ['@overseer.integration.doctrine_telegram_integration_read_model', '@overseer.integration.project_membership_checker']
+        tags: ['query_handler']
+
+    Overseer\Integration\Application\Query\GetTelegramIntegrationMessagesQueryHandler:
+        arguments: ['@overseer.integration.doctrine_telegram_integration_read_model', '@overseer.integration.project_membership_checker']
+        tags: ['query_handler']
+
+    # PERSISTENCE
+    Overseer\Integration\Infrastructure\Persistence\Doctrine\DoctrineWebhookIntegrationReadModel:
+        arguments: ['@doctrine.orm.entity_manager']
+
+    Overseer\Integration\Infrastructure\Persistence\Doctrine\DoctrineWebhookIntegrationWriteModel:
+        arguments: ['@doctrine.orm.entity_manager']
+
+    Overseer\Integration\Infrastructure\Persistence\Doctrine\DoctrineTelegramIntegrationReadModel:
+        arguments: ['@doctrine.orm.entity_manager']
+
+    Overseer\Integration\Infrastructure\Persistence\Doctrine\DoctrineTelegramIntegrationWriteModel:
+        arguments: ['@doctrine.orm.entity_manager']
+
+    # CLI
+    Overseer\Integration\Infrastructure\CLI\ProcessWebhookIntegrationMessagesCommand:
+        arguments: ['@overseer.integration.doctrine_webhook_integration_read_model', '@overseer.integration.doctrine_webhook_integration_write_model', '@Overseer\Integration\Infrastructure\CLI\ProcessWebhookIntegrationMessagesCommandInvoker', '@overseer.integration.webhook_message_sender']
+        tags:
+            - { name: 'console.command', command: 'overseer:integration:process-webhook-integration-messages' }
+
+    Overseer\Integration\Infrastructure\CLI\ProcessWebhookIntegrationMessagesCommandInvoker:
+        arguments: ['%kernel.project_dir%', 'overseer:integration:process-webhook-integration-messages']
+
+    Overseer\Integration\Infrastructure\CLI\ProcessTelegramIntegrationMessagesCommand:
+        arguments: ['@overseer.integration.doctrine_telegram_integration_read_model', '@overseer.integration.doctrine_telegram_integration_write_model', '@Overseer\Integration\Infrastructure\CLI\ProcessTelegramIntegrationMessagesCommandInvoker', '@overseer.integration.telegram_message_sender']
+        tags:
+            - { name: 'console.command', command: 'overseer:integration:process-telegram-integration-messages' }
+
+    Overseer\Integration\Infrastructure\CLI\ProcessTelegramIntegrationMessagesCommandInvoker:
+        arguments: ['%kernel.project_dir%', 'overseer:integration:process-telegram-integration-messages']
+
+    # SERVICES
+    Overseer\Integration\Application\WebhookMessageSender: ~
+
+    Overseer\Integration\Application\TelegramMessageSender: ~
+
+    Overseer\Integration\Application\ProjectMembershipChecker:
+        arguments: ['@overseer.project.doctrine_project_read_model']
