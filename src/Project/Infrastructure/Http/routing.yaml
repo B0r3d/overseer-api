@@ -1,0 +1,79 @@
+api_v1_project_post:
+    path: /api/v1/project
+    methods: ['POST']
+    controller: Overseer\Project\Infrastructure\Http\Action\CreateProjectAction
+
+api_v1_project_patch:
+    path: /api/v1/project/{_id}
+    methods: ['PATCH']
+    controller: Overseer\Project\Infrastructure\Http\Action\UpdateProjectAction
+
+api_v1_project_remove:
+    path: /api/v1/project/{_id}
+    methods: ['DELETE']
+    controller: Overseer\Project\Infrastructure\Http\Action\DeleteProjectAction
+
+api_v1_project_member_invitation_post:
+    path: /api/v1/project/{_project_id}/project-member-invitation
+    methods: ['POST']
+    controller: Overseer\Project\Infrastructure\Http\Action\InviteNewProjectMemberAction
+
+api_v1_project_member_invitation_accept:
+    path: /api/v1/project/{_project_id}/project-member-invitation/{_invitation_id}/accept
+    methods: ['PUT']
+    controller: Overseer\Project\Infrastructure\Http\Action\AcceptInvitationAction
+
+api_v1_project_member_invitation_decline:
+    path: /api/v1/project/{_project_id}/project-member-invitation/{_invitation_id}/decline
+    methods: ['PUT']
+    controller: Overseer\Project\Infrastructure\Http\Action\DeclineInvitationAction
+
+api_v1_project_member_delete:
+    path: /api/v1/project/{_project_id}/project-member/{_project_member_id}
+    methods: ['DELETE']
+    controller: Overseer\Project\Infrastructure\Http\Action\RemoveProjectMemberAction
+
+api_v1_project_member_invitation_cancel:
+    path: /api/v1/project/{_project_id}/project-member-invitation/{_invitation_id}
+    methods: ['DELETE']
+    controller: Overseer\Project\Infrastructure\Http\Action\CancelInvitationAction
+
+api_v1_projects:
+    path: /api/v1/project
+    methods: ['GET']
+    controller: Overseer\Project\Infrastructure\Http\Action\GetProjectsAction
+
+api_v1_create_api_key:
+    path: /api/v1/project/{_project_id}/api-key
+    methods: ['POST']
+    controller: Overseer\Project\Infrastructure\Http\Action\CreateApiKeyAction
+
+api_v1_remove_api_key:
+    path: /api/v1/project/{_project_id}/api-key/{_api_key_id}
+    methods: ['DELETE']
+    controller: Overseer\Project\Infrastructure\Http\Action\RemoveApiKeyAction
+
+api_v1_project:
+    path: /api/v1/project/{_project_id}
+    methods: ['GET']
+    controller: Overseer\Project\Infrastructure\Http\Action\GetProjectAction
+
+api_v1_error:
+    path: /api/v1/error
+    methods: ['POST']
+    controller: Overseer\Project\Infrastructure\Http\Action\CreateErrorAction
+
+api_v1_project_errors:
+    path: /api/v1/project/{_project_id}/errors
+    methods: ['GET']
+    controller: Overseer\Project\Infrastructure\Http\Action\GetProjectErrorsAction
+
+api_v1_project_error:
+    path: /api/v1/project/{_project_id}/errors/{_error_id}
+    methods: ['GET']
+    controller: Overseer\Project\Infrastructure\Http\Action\GetProjectErrorAction
+
+api_v1_project_errors_summary:
+    path: /api/v1/project/{_project_id}/errors-summary
+    methods: ['GET']
+    controller: Overseer\Project\Infrastructure\Http\Action\GetProjectErrorsSummaryAction

@@ -22,4 +22,10 @@ final class DoctrineUserWriteModel implements UserWriteModel
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
+
+    function delete(User $user): void
+    {
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+    }
 }

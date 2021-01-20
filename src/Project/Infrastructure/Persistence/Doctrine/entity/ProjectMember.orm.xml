@@ -1,0 +1,15 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Overseer\Project\Domain\Entity\ProjectMember" table="project_members">
+        <many-to-one field="project" target-entity="Overseer\Project\Domain\Entity\Project">
+            <join-column name="project_id" referenced-column-name="id" on-delete="CASCADE" />
+        </many-to-one>
+
+        <id name="id" type="string" length="191" />
+        <embedded name="username" class="Overseer\Project\Domain\ValueObject\ProjectMemberUsername" column-prefix="username_" />
+        <field name="joinedAt" type="datetime" />
+    </entity>
+</doctrine-mapping>

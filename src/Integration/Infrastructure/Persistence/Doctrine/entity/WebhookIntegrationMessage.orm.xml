@@ -1,0 +1,23 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Overseer\Integration\Domain\Entity\WebhookIntegrationMessage" table="webhook_integration_messages">
+        <many-to-one field="integration" target-entity="Overseer\Integration\Domain\Entity\WebhookIntegration">
+            <join-column name="integration_id" referenced-column-name="id" on-delete="CASCADE" />
+        </many-to-one>
+
+        <id name="id" type="string" length="191" />
+        <field name="errorId" type="string" length="191" />
+        <field name="status" type="string" length="191" />
+        <field name="response" type="text" />
+        <field name="lastAttempt" type="datetime" nullable="true" />
+        <field name="nextAttempt" type="datetime" nullable="true" />
+        <field name="createdAt" type="datetime" />
+        <field name="attemptCount" type="integer" />
+        <field name="statusCode" type="integer" />
+        <field name="json" type="array" />
+
+    </entity>
+</doctrine-mapping>

@@ -14,6 +14,6 @@ final class Email extends StringValueObject
             throw new \InvalidArgumentException('Invalid email address provided. Got "' . $value . '".');
         }
 
-        parent::__construct($value);
+        parent::__construct(strtolower($value));
     }
 }

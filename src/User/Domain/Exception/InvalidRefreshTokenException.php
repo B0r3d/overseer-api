@@ -4,6 +4,8 @@
 namespace Overseer\User\Domain\Exception;
 
 
-final class InvalidRefreshTokenException extends \RuntimeException
+use Overseer\Shared\Domain\Exception\ValidationException;
+
+final class InvalidRefreshTokenException extends ValidationException
 {
 }

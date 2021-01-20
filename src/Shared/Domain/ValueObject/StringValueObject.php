@@ -22,13 +22,13 @@ abstract class StringValueObject
         return $this->value === $other->value;
     }
 
-    public function value(): string
+    public function getValue(): string
     {
         return $this->value;
     }
 
     public function __toString(): string
     {
-        return $this->value();
+        return $this->getValue();
     }
 }

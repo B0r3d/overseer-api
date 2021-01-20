@@ -1,0 +1,41 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Overseer\Project\Domain\Entity\Project" table="projects">
+        <one-to-many field="invitations" target-entity="Overseer\Project\Domain\Entity\ProjectMemberInvitation" mapped-by="project" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="members" target-entity="Overseer\Project\Domain\Entity\ProjectMember" mapped-by="project" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="apiKeys" target-entity="Overseer\Project\Domain\Entity\ApiKey" mapped-by="project" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="errors" target-entity="Overseer\Project\Domain\Entity\Error" mapped-by="project" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-one field="projectOwner" target-entity="Overseer\Project\Domain\Entity\ProjectMember">
+            <join-column name="project_member_id" referenced-column-name="id" />
+        </one-to-one>
+
+        <id name="id" type="string" length="191" />
+        <embedded name="projectTitle" class="Overseer\Project\Domain\ValueObject\ProjectTitle" column-prefix="project_title_" />
+        <field name="description" type="text" nullable="true" />
+        <embedded name="slug" class="Overseer\Project\Domain\ValueObject\Slug" column-prefix="slug_" />
+        <field name="createdAt" type="datetime" />
+    </entity>
+</doctrine-mapping>

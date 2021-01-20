@@ -12,14 +12,77 @@ doctrine:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
+        dql:
+            string_functions:
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                YEAR: DoctrineExtensions\Query\Mysql\Year
+                DAY: DoctrineExtensions\Query\Mysql\Day
         mappings:
+            # SHARED
+            shared_value_object:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Shared/Infrastructure/Persistence/Doctrine/embeddable'
+                prefix: 'Overseer\Shared\Domain\ValueObject'
+            shared_message_bus:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Shared/Infrastructure/Persistence/Doctrine/entity'
+                prefix: 'Overseer\Shared\Infrastructure\Bus\Event'
+
+            # USER
             user_entity:
                 is_bundle: false
                 type: xml
                 dir: '%kernel.root_dir%/User/Infrastructure/Persistence/Doctrine/entity'
                 prefix: 'Overseer\User\Domain\Entity'
+
             user_value_object:
                 is_bundle: false
                 type: xml
                 dir: '%kernel.root_dir%/User/Infrastructure/Persistence/Doctrine/embeddable'
                 prefix: 'Overseer\User\Domain\ValueObject'
+
+            user_enums:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/User/Infrastructure/Persistence/Doctrine/enum'
+                prefix: 'Overseer\User\Domain\Enum'
+
+            # PROJECT
+            project_entity:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Project/Infrastructure/Persistence/Doctrine/entity'
+                prefix: 'Overseer\Project\Domain\Entity'
+
+            project_value_object:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Project/Infrastructure/Persistence/Doctrine/embeddable'
+                prefix: 'Overseer\Project\Domain\ValueObject'
+
+            project_enums:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Project/Infrastructure/Persistence/Doctrine/enum'
+                prefix: 'Overseer\Project\Domain\Enum'
+
+            # Integration
+            integration_entity:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Integration/Infrastructure/Persistence/Doctrine/entity'
+                prefix: 'Overseer\Integration\Domain\Entity'
+
+            integration_value_object:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.root_dir%/Integration/Infrastructure/Persistence/Doctrine/embeddable'
+                prefix: 'Overseer\Integration\Domain\ValueObject'
+
+#            integration_enums:
+#                is_bundle: false
+#                type: xml
+#                dir: '%kernel.root_dir%/Project/Infrastructure/Persistence/Doctrine/enum'
+#                prefix: 'Overseer\Project\Domain\Enum'

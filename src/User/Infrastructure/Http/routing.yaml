@@ -1,23 +1,58 @@
 api_v1_user_post:
     path: /api/v1/user
     methods: ['POST']
-    controller: Overseer\User\Infrastructure\Http\Action\RegisterUser
+    controller: Overseer\User\Infrastructure\Http\Action\RegisterUserAction
+
+api_v1_user_delete:
+    path: /api/v1/user/{_id}
+    methods: ['DELETE']
+    controller: Overseer\User\Infrastructure\Http\Action\DeleteUserAction
 
 api_v1_user_authenticate:
     path: /api/v1/authenticate
     methods: ['POST']
-    controller: Overseer\User\Infrastructure\Http\Action\Authenticate
+    controller: Overseer\User\Infrastructure\Http\Action\AuthenticateUserAction
 
 api_v1_user_me:
     path: /api/v1/user/me
-    controller: Overseer\User\Infrastructure\Http\Action\Me
+    controller: Overseer\User\Infrastructure\Http\Action\MeAction
 
 api_v1_refresh_token:
     path: /api/v1/refresh-token
     methods: ['POST']
-    controller: Overseer\User\Infrastructure\Http\Action\RefreshToken
+    controller: Overseer\User\Infrastructure\Http\Action\RefreshTokenAction
 
 api_v1_logout:
     path: /api/v1/logout
     methods: ['POST']
-    controller: Overseer\User\Infrastructure\Http\Action\Logout
+    controller: Overseer\User\Infrastructure\Http\Action\LogoutAction
+
+api_v1_change_user_password:
+    path: /api/v1/user/{_user_id}/password
+    methods: ['PUT']
+    controller: Overseer\User\Infrastructure\Http\Action\ChangeUserPasswordAction
+
+api_v1_user_exists:
+    path: /api/v1/user/user-exists
+    methods: ['HEAD']
+    controller: Overseer\User\Infrastructure\Http\Action\UserExistsAction
+
+api_v1_request_password_reset:
+    path: /api/v1/user/password-reset
+    methods: ['POST']
+    controller: Overseer\User\Infrastructure\Http\Action\PasswordResetAction
+
+api_v1_check_password_reset_token:
+    path: /api/v1/user/password-reset-token/{_password_reset_token}
+    methods: ['GET']
+    controller: Overseer\User\Infrastructure\Http\Action\CheckPasswordResetTokenAction
+
+api_v1_new_password:
+    path: /api/v1/user/new-password
+    methods: ['PUT']
+    controller: Overseer\User\Infrastructure\Http\Action\NewPasswordAction
+
+api_v1_users:
+    path: /api/v1/user
+    methods: ['GET']
+    controller: Overseer\User\Infrastructure\Http\Action\GetUsersAction
