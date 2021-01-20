@@ -11,6 +11,7 @@ class ParamFetcherFactory
     public function createFetcher(Request $request): ParamFetcher
     {
         $query = $request->query->all();
+
         switch($request->headers->get('Content-Type')) {
             case 'application/json':
                 $data = json_decode($request->getContent(), true);

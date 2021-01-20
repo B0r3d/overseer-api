@@ -9,7 +9,7 @@ use Overseer\User\Domain\Command\RequestPasswordResetCommand;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PasswordResetAction extends AbstractAction
+final class PasswordResetAction extends AbstractAction
 {
     public function __invoke(Request $request): Response
     {

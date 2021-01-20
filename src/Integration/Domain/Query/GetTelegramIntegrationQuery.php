@@ -6,7 +6,7 @@ namespace Overseer\Integration\Domain\Query;
 
 use Overseer\Shared\Domain\ValueObject\SingleObjectQuery;
 
-class GetTelegramIntegrationQuery extends SingleObjectQuery
+final class GetTelegramIntegrationQuery extends SingleObjectQuery
 {
     private string $issuedBy;
 

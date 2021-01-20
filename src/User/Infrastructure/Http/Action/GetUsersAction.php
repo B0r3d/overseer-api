@@ -12,7 +12,7 @@ use Overseer\User\Domain\Query\GetUsersQuery;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetUsersAction extends AbstractAction
+final class GetUsersAction extends AbstractAction
 {
     public function __invoke(Request $request): Response
     {

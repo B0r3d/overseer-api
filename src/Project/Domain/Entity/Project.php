@@ -34,7 +34,7 @@ class Project extends AggregateRoot
     private ProjectTitle $projectTitle;
     private ?string $description;
     private Slug $slug;
-    private ProjectMember $projectOwner;
+    private ?ProjectMember $projectOwner;
     private \DateTime $createdAt;
     private $invitations;
     private Invitations $_invitations;
@@ -58,6 +58,11 @@ class Project extends AggregateRoot
     public function getProjectTitle(): ProjectTitle
     {
         return $this->projectTitle;
+    }
+
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
     }
 
     public function getDescription(): ?string
@@ -191,7 +196,8 @@ class Project extends AggregateRoot
         $this->_invitations[] = $invitation;
         $this->record(new UserInvitedToProject(
             $this->id,
-            $email
+            $email,
+            $invitationId
         ));
     }
 
@@ -280,5 +286,15 @@ class Project extends AggregateRoot
     public function isProjectOwner(Username $username): bool
     {
         return $this->projectOwner->getUsername()->equals($username);
+    }
+
+    public function changeProjectOwner(ProjectMember $newProjectOwner)
+    {
+        $this->projectOwner = $newProjectOwner;
+    }
+
+    public function preDelete()
+    {
+        $this->projectOwner = null;
     }
 }

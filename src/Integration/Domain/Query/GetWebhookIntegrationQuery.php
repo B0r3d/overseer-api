@@ -6,7 +6,7 @@ namespace Overseer\Integration\Domain\Query;
 
 use Overseer\Shared\Domain\ValueObject\SingleObjectQuery;
 
-class GetWebhookIntegrationQuery extends SingleObjectQuery
+final class GetWebhookIntegrationQuery extends SingleObjectQuery
 {
     private string $issuedBy;
 

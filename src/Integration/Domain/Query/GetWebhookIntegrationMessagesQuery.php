@@ -6,7 +6,7 @@ namespace Overseer\Integration\Domain\Query;
 
 use Overseer\Shared\Domain\ValueObject\PaginatedQuery;
 
-class GetWebhookIntegrationMessagesQuery extends PaginatedQuery
+final class GetWebhookIntegrationMessagesQuery extends PaginatedQuery
 {
     private string $issuedBy;
     private string $integrationId;

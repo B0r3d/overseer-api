@@ -6,7 +6,7 @@ namespace Overseer\Project\Domain\Event;
 
 use Overseer\Shared\Domain\Bus\Event\DomainEvent;
 
-class ErrorOccurred extends DomainEvent
+final class ErrorOccurred extends DomainEvent
 {
     private string $projectId;
     private string $errorId;

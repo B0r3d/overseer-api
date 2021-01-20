@@ -3,6 +3,11 @@ api_v1_user_post:
     methods: ['POST']
     controller: Overseer\User\Infrastructure\Http\Action\RegisterUserAction
 
+api_v1_user_delete:
+    path: /api/v1/user/{_id}
+    methods: ['DELETE']
+    controller: Overseer\User\Infrastructure\Http\Action\DeleteUserAction
+
 api_v1_user_authenticate:
     path: /api/v1/authenticate
     methods: ['POST']

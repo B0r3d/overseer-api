@@ -6,7 +6,7 @@ namespace Overseer\Project\Domain\Query;
 
 use Overseer\Shared\Domain\ValueObject\SingleObjectQuery;
 
-class GetProjectErrorQuery extends SingleObjectQuery
+final class GetProjectErrorQuery extends SingleObjectQuery
 {
     private string $projectId;
     private string $issuedBy;

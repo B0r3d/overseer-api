@@ -6,7 +6,7 @@ namespace Overseer\Project\Domain\Command;
 
 use Overseer\Shared\Domain\Bus\Command\Command;
 
-class CreateErrorCommand implements Command
+final class CreateErrorCommand implements Command
 {
     private string $projectId;
     private string $errorId;

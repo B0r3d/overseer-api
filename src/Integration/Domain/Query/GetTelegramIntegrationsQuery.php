@@ -6,7 +6,7 @@ namespace Overseer\Integration\Domain\Query;
 
 use Overseer\Shared\Domain\ValueObject\PaginatedQuery;
 
-class GetTelegramIntegrationsQuery extends PaginatedQuery
+final class GetTelegramIntegrationsQuery extends PaginatedQuery
 {
     private string $issuedBy;
     private string $projectId;

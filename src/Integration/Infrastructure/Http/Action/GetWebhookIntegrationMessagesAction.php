@@ -12,7 +12,7 @@ use Overseer\Shared\Infrastructure\Http\AbstractAction;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetWebhookIntegrationMessagesAction extends AbstractAction
+final class GetWebhookIntegrationMessagesAction extends AbstractAction
 {
     public function __invoke(Request $request): Response
     {

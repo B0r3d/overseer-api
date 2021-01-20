@@ -10,7 +10,7 @@ use Overseer\User\Domain\Service\UserReadModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckPasswordResetTokenAction extends AbstractAction
+final class CheckPasswordResetTokenAction extends AbstractAction
 {
     private UserReadModel $userReadModel;
 

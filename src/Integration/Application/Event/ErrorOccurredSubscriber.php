@@ -18,7 +18,7 @@ use Overseer\Project\Domain\ValueObject\ProjectId;
 use Overseer\Shared\Domain\Bus\Event\EventSubscriber;
 use Overseer\Shared\Domain\ValueObject\Uuid;
 
-class ErrorOccurredSubscriber implements EventSubscriber
+final class ErrorOccurredSubscriber implements EventSubscriber
 {
     private ProjectReadModel $projectReadModel;
     private WebhookIntegrationReadModel $webhookIntegrationReadModel;

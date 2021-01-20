@@ -22,4 +22,18 @@ final class DoctrineProjectWriteModel implements ProjectWriteModel
         $this->em->persist($project);
         $this->em->flush();
     }
+
+    public function delete(Project $project): void
+    {
+        $projectMembers = $project->getMembers();
+        $project->preDelete();
+
+        foreach ($projectMembers as $member) {
+            $this->em->remove($member);
+            $this->em->flush();
+        }
+
+        $this->em->remove($project);
+        $this->em->flush();
+    }
 }

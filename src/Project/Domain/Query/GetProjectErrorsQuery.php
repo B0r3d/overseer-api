@@ -6,7 +6,7 @@ namespace Overseer\Project\Domain\Query;
 
 use Overseer\Shared\Domain\ValueObject\PaginatedQuery;
 
-class GetProjectErrorsQuery extends PaginatedQuery
+final class GetProjectErrorsQuery extends PaginatedQuery
 {
     private string $projectId;
     private string $issuedBy;

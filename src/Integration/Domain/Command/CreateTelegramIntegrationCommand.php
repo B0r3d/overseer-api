@@ -6,7 +6,7 @@ namespace Overseer\Integration\Domain\Command;
 
 use Overseer\Shared\Domain\Bus\Command\Command;
 
-class CreateTelegramIntegrationCommand implements Command
+final class CreateTelegramIntegrationCommand implements Command
 {
     private string $issuedBy;
     private string $id;
@@ -23,6 +23,11 @@ class CreateTelegramIntegrationCommand implements Command
         $this->botId = $botId;
         $this->chatId = $chatId;
         $this->filters = $filters;
+    }
+
+    public function getIssuedBy(): string
+    {
+        return $this->issuedBy;
     }
 
     public function getId(): string

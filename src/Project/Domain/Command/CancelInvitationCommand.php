@@ -6,7 +6,7 @@ namespace Overseer\Project\Domain\Command;
 
 use Overseer\Shared\Domain\Bus\Command\Command;
 
-class CancelInvitationCommand implements Command
+final class CancelInvitationCommand implements Command
 {
     private string $invitationId;
     private string $issuedBy;

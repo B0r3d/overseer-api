@@ -1,3 +1,6 @@
+parameters:
+    accept_invitation_page: '%env(ACCEPT_INVITATION_PAGE)%'
+
 services:
     # ALIASES
     overseer.project.doctrine_project_read_model: '@Overseer\Project\Infrastructure\Persistence\Doctrine\DoctrineProjectReadModel'
@@ -61,6 +64,14 @@ services:
         public: true
 
     Overseer\Project\Infrastructure\Http\Action\GetProjectErrorsSummaryAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Project\Infrastructure\Http\Action\UpdateProjectAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
+    Overseer\Project\Infrastructure\Http\Action\DeleteProjectAction:
         parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
 
@@ -128,9 +139,31 @@ services:
     Overseer\Project\Application\Command\CreateErrorCommand\CreateErrorCommandValidator:
         arguments: ['@overseer.project.doctrine_project_read_model']
 
+    Overseer\Project\Application\Command\UpdateProjectCommand\UpdateProjectCommandHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@Overseer\Project\Application\Command\UpdateProjectCommand\UpdateProjectCommandValidator']
+        tags: ['command_handler']
+
+    Overseer\Project\Application\Command\UpdateProjectCommand\UpdateProjectCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
+    Overseer\Project\Application\Command\DeleteProjectCommand\DeleteProjectCommandHandler:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@Overseer\Project\Application\Command\DeleteProjectCommand\DeleteProjectCommandValidator', '@overseer.shared.database_asynchronous_event_bus']
+        tags: ['command_handler']
+
+    Overseer\Project\Application\Command\DeleteProjectCommand\DeleteProjectCommandValidator:
+        arguments: ['@overseer.project.doctrine_project_read_model']
+
     # EVENT SUBSCRIBERS
     Overseer\Project\Application\Event\InvitationAcceptedSubscriber:
         arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model']
+        tags: ['domain_events_subscriber']
+
+    Overseer\Project\Application\Event\UserDeletedSubscriber:
+        arguments: ['@overseer.project.doctrine_project_read_model', '@overseer.project.doctrine_project_write_model', '@overseer.shared.database_asynchronous_event_bus']
+        tags: ['domain_events_subscriber']
+
+    Overseer\Project\Application\Event\UserInvitedToProjectSubscriber:
+        arguments: ['@overseer.shared.twig_email_factory', '@overseer.shared.symfony_mailer', '%accept_invitation_page%']
         tags: ['domain_events_subscriber']
 
     # QUERY HANDLERS

@@ -16,6 +16,7 @@ use Overseer\Project\Domain\ValueObject\ProjectId;
 use Overseer\Project\Domain\ValueObject\ProjectMemberId;
 use Overseer\Project\Domain\ValueObject\ProjectMemberInvitationId;
 use Overseer\Project\Domain\ValueObject\Slug;
+use Overseer\Project\Domain\ValueObject\Username;
 
 final class DoctrineProjectReadModel implements ProjectReadModel
 {
@@ -234,5 +235,19 @@ final class DoctrineProjectReadModel implements ProjectReadModel
             $qb->where('pe.occurredAt <= :date_to')
                 ->setParameter('date_to', $criteria['date_to']);
         }
+    }
+
+    public function findWhereUserIsAMember(Username $username): array
+    {
+        $qb = $this->em->createQueryBuilder();
+
+        return $qb->select('p')
+            ->from(Project::class, 'p')
+            ->leftJoin(ProjectMember::class, 'pm', 'WITH', 'pm.project = p')
+            ->where('pm.username.value = :username')
+            ->setParameter('username', $username->getValue())
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

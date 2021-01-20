@@ -6,7 +6,7 @@ namespace Overseer\Integration\Domain\Command;
 
 use Overseer\Shared\Domain\Bus\Command\Command;
 
-class DeleteWebhookIntegrationCommand implements Command
+final class DeleteWebhookIntegrationCommand implements Command
 {
     private string $issuedBy;
     private string $id;

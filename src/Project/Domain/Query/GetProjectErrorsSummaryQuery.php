@@ -6,7 +6,7 @@ namespace Overseer\Project\Domain\Query;
 
 use Overseer\Shared\Domain\ValueObject\SingleObjectQuery;
 
-class GetProjectErrorsSummaryQuery extends SingleObjectQuery
+final class GetProjectErrorsSummaryQuery extends SingleObjectQuery
 {
     private string $issuedBy;
     private array $criteria;

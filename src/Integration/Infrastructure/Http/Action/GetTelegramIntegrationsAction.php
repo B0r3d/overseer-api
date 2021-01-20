@@ -12,7 +12,7 @@ use Overseer\Shared\Infrastructure\Http\AbstractAction;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetTelegramIntegrationsAction extends AbstractAction
+final class GetTelegramIntegrationsAction extends AbstractAction
 {
     public function __invoke(Request $request): Response
     {

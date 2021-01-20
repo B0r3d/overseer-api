@@ -29,6 +29,8 @@ class AuthorizedProjectMember implements Specification
             case ProjectMemberPermission::CANCEL_INVITATION():
             case ProjectMemberPermission::MANAGE_WEBHOOK_INTEGRATION():
             case ProjectMemberPermission::MANAGE_TELEGRAM_INTEGRATION():
+            case ProjectMemberPermission::UPDATE_PROJECT():
+            case ProjectMemberPermission::DELETE_PROJECT():
                 return $value === $this->project->getProjectOwner()->getUsername()->getValue();
         }
     }

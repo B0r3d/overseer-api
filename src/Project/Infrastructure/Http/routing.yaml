@@ -3,6 +3,16 @@ api_v1_project_post:
     methods: ['POST']
     controller: Overseer\Project\Infrastructure\Http\Action\CreateProjectAction
 
+api_v1_project_patch:
+    path: /api/v1/project/{_id}
+    methods: ['PATCH']
+    controller: Overseer\Project\Infrastructure\Http\Action\UpdateProjectAction
+
+api_v1_project_remove:
+    path: /api/v1/project/{_id}
+    methods: ['DELETE']
+    controller: Overseer\Project\Infrastructure\Http\Action\DeleteProjectAction
+
 api_v1_project_member_invitation_post:
     path: /api/v1/project/{_project_id}/project-member-invitation
     methods: ['POST']

@@ -69,6 +69,10 @@ services:
         parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
 
+    Overseer\User\Infrastructure\Http\Action\DeleteUserAction:
+        parent: Overseer\Shared\Infrastructure\Http\AbstractAction
+        public: true
+
     # COMMAND HANDLERS
     Overseer\User\Application\Command\RegisterUserCommand\RegisterUserCommandHandler:
         arguments: ['@Overseer\User\Application\Command\RegisterUserCommand\RegisterUserCommandValidator', '@overseer.user.regular_user_factory', '@overseer.user.doctrine_user_write_model', '@overseer.shared.event_bus']
@@ -112,6 +116,13 @@ services:
     Overseer\User\Application\Command\InvalidateRefreshTokenCommand\InvalidateRefreshTokenCommandHandler:
         arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model']
         tags: ['command_handler']
+
+    Overseer\User\Application\Command\DeleteUserCommand\DeleteUserCommandHandler:
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.doctrine_user_write_model', '@Overseer\User\Application\Command\DeleteUserCommand\DeleteUserCommandValidator', '@overseer.shared.database_asynchronous_event_bus']
+        tags: ['command_handler']
+
+    Overseer\User\Application\Command\DeleteUserCommand\DeleteUserCommandValidator:
+        arguments: ['@overseer.user.doctrine_user_read_model', '@overseer.user.bcrypt_password_encoder']
 
     # EVENT SUBSCRIBERS
     Overseer\User\Application\Event\UserPasswordChangedSubscriber:

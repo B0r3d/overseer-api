@@ -6,7 +6,7 @@ namespace Overseer\Integration\Domain\Command;
 
 use Overseer\Shared\Domain\Bus\Command\Command;
 
-class DeleteTelegramIntegrationCommand implements Command
+final class DeleteTelegramIntegrationCommand implements Command
 {
     private string $issuedBy;
     private string $id;

@@ -114,6 +114,14 @@ services:
             - '@overseer.integration.telegram_message_sender'
         tags: ['domain_events_subscriber']
 
+    Overseer\Integration\Application\Event\ProjectDeletedSubscriber:
+        arguments:
+            - '@overseer.integration.doctrine_webhook_integration_read_model'
+            - '@overseer.integration.doctrine_webhook_integration_write_model'
+            - '@overseer.integration.doctrine_telegram_integration_read_model'
+            - '@overseer.integration.doctrine_telegram_integration_write_model'
+        tags: ['domain_events_subscriber']
+
     # QUERY HANDLERS
     Overseer\Integration\Application\Query\GetWebhookIntegrationsQueryHandler:
         arguments: ['@overseer.integration.doctrine_webhook_integration_read_model', '@overseer.integration.project_membership_checker']
