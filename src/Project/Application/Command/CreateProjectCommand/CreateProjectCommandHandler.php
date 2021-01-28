@@ -41,13 +41,11 @@ class CreateProjectCommandHandler implements CommandHandler
 
         $projectId = ProjectId::fromString($command->getProjectId());
         $projectTitle = new ProjectTitle($command->getProjectTitle());
-        $projectSlug = new Slug($command->getProjectSlug());
         $projectMemberUsername = new ProjectMemberUsername($command->getProjectOwner());
 
         $project = Project::create(
             $projectId,
             $projectTitle,
-            $projectSlug,
             $projectMemberUsername,
             $command->getDescription()
         );

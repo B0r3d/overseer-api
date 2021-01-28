@@ -20,7 +20,7 @@ final class InMemoryQueryBus implements QueryBus
 
     function ask(Query $query): Result
     {
-        /** @var \Closure $queryHandler mark it as closure so it is not marked as invalid code */
+        /** @var \Closure $queryHandler */
         $queryHandler = $this->queryHandlerLocator->locateHandler($query);
         return $queryHandler($query);
     }

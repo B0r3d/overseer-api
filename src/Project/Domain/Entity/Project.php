@@ -33,7 +33,6 @@ class Project extends AggregateRoot
     private ProjectId $_id;
     private ProjectTitle $projectTitle;
     private ?string $description;
-    private Slug $slug;
     private ?ProjectMember $projectOwner;
     private \DateTime $createdAt;
     private $invitations;
@@ -68,11 +67,6 @@ class Project extends AggregateRoot
     public function getDescription(): ?string
     {
         return $this->description;
-    }
-
-    public function getSlug(): Slug
-    {
-        return $this->slug;
     }
 
     public function getProjectOwner(): ProjectMember
@@ -125,11 +119,10 @@ class Project extends AggregateRoot
         return $this->_errors;
     }
 
-    protected function __construct(ProjectId $uuid, ProjectTitle $projectTitle, Slug $slug, ProjectMemberUsername $projectOwner, string $description = null)
+    protected function __construct(ProjectId $uuid, ProjectTitle $projectTitle, ProjectMemberUsername $projectOwner, string $description = null)
     {
         $this->id = $uuid->value();
         $this->projectTitle = $projectTitle;
-        $this->slug = $slug;
         $this->description = $description;
         $this->_invitations = new Invitations();
         $this->_apiKeys = new ApiKeys();
@@ -147,12 +140,11 @@ class Project extends AggregateRoot
         $this->addMember($projectOwner);
     }
 
-    public static function create(ProjectId $uuid, ProjectTitle $projectTitle, Slug $slug, ProjectMemberUsername $projectOwner, string $description = null): self
+    public static function create(ProjectId $uuid, ProjectTitle $projectTitle, ProjectMemberUsername $projectOwner, string $description = null): self
     {
         $instance = new self(
             $uuid,
             $projectTitle,
-            $slug,
             $projectOwner,
             $description
         );

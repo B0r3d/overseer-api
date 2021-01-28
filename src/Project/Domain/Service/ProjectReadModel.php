@@ -13,7 +13,6 @@ use Overseer\Project\Domain\ValueObject\Username;
 
 interface ProjectReadModel
 {
-    public function findBySlug(Slug $slug): ?Project;
     public function findById(ProjectId $projectId): ?Project;
     public function findByInvitationId(ProjectMemberInvitationId $invitationId): ?Project;
     public function findByProjectMemberId(ProjectMemberId $projectMemberId): ?Project;

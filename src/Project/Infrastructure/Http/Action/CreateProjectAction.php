@@ -22,7 +22,6 @@ final class CreateProjectAction extends AbstractAction
         $command = new CreateProjectCommand(
             $projectId->value(),
             $paramFetcher->getDataParameter('project_title', ''),
-            $paramFetcher->getDataParameter('project_slug', ''),
             $subject->getUsername(),
             $paramFetcher->getDataParameter('project_description', '')
         );
@@ -33,7 +32,6 @@ final class CreateProjectAction extends AbstractAction
             'project' => [
                 'id' => $command->getProjectId(),
                 'title' => $command->getProjectTitle(),
-                'slug' => $command->getProjectSlug(),
                 'description' => $command->getDescription(),
                 'project_owner' => [
                     'username' => $command->getProjectOwner(),

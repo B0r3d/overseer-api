@@ -32,10 +32,6 @@ class GetProjectsQueryHandler implements QueryHandler
             $criteria['search'] = $query->getCriteria()['search'];
         }
 
-        if (!empty($query->getCriteria()['slug'])) {
-            $criteria['slug'] = $query->getCriteria()['slug'];
-        }
-
         $sort = [];
 
         $offset = ($query->getPage() - 1) * 10;
