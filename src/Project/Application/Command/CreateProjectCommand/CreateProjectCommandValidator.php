@@ -35,10 +35,6 @@ class CreateProjectCommandValidator implements CommandValidator
             new Field($command->getProjectId(), 'Invalid project id', [
                 new ValidUuid(),
             ]),
-            new Field($command->getProjectSlug(), 'Invalid project slug', [
-                new ValidSlug(),
-                new AvailableSlug($this->projectReadModel),
-            ]),
             new Field($command->getProjectTitle(), 'Invalid project title', [
                 new MinLength(4),
             ])

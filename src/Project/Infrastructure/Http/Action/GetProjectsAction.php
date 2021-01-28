@@ -25,7 +25,6 @@ final class GetProjectsAction extends AbstractAction
             $paramFetcher->getQueryParameter('page', 1),
             [
                 'search' => $paramFetcher->getQueryParameter('search', ''),
-                'slug' => $paramFetcher->getQueryParameter('slug', ''),
             ],
             $paramFetcher->getQueryParameter('sort', [])
         );

@@ -60,11 +60,6 @@ class EventRepository
         return $result['event_count'];
     }
 
-    public function findProcessedEventsCount()
-    {
-
-    }
-
     public function saveEvent(EventEntity $entity)
     {
         $this->em->persist($entity);

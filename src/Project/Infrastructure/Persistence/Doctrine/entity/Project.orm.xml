@@ -35,7 +35,6 @@
         <id name="id" type="string" length="191" />
         <embedded name="projectTitle" class="Overseer\Project\Domain\ValueObject\ProjectTitle" column-prefix="project_title_" />
         <field name="description" type="text" nullable="true" />
-        <embedded name="slug" class="Overseer\Project\Domain\ValueObject\Slug" column-prefix="slug_" />
         <field name="createdAt" type="datetime" />
     </entity>
 </doctrine-mapping>

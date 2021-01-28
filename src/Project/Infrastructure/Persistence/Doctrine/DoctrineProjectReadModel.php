@@ -15,7 +15,6 @@ use Overseer\Project\Domain\Service\ProjectReadModel;
 use Overseer\Project\Domain\ValueObject\ProjectId;
 use Overseer\Project\Domain\ValueObject\ProjectMemberId;
 use Overseer\Project\Domain\ValueObject\ProjectMemberInvitationId;
-use Overseer\Project\Domain\ValueObject\Slug;
 use Overseer\Project\Domain\ValueObject\Username;
 
 final class DoctrineProjectReadModel implements ProjectReadModel
@@ -25,13 +24,6 @@ final class DoctrineProjectReadModel implements ProjectReadModel
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-    }
-
-    public function findBySlug(Slug $slug): ?Project
-    {
-        return $this->em->getRepository(Project::class)->findOneBy([
-            'slug.value' => $slug->getValue(),
-        ]);
     }
 
     public function findByProjectMemberId(ProjectMemberId $projectMemberId): ?Project
@@ -210,11 +202,6 @@ final class DoctrineProjectReadModel implements ProjectReadModel
             ')
                 ->setParameter('phrase', '%' . $criteria['search'] . '%')
                 ->setParameter('fuzzy_query', explode('/\s+/', $criteria['search']));
-        }
-
-        if (!empty($criteria['slug'])) {
-            $qb->andWhere('p.slug.value = :slug')
-                ->setParameter('slug', $criteria['slug']);
         }
     }
 
