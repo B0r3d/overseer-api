@@ -1,3 +1,7 @@
 api_v1_ping:
     path: /api/v1/ping
     controller: Overseer\Ping
+
+download:
+    path: /download
+    controller: Overseer\Shared\Infrastructure\Http\DownloadAction
