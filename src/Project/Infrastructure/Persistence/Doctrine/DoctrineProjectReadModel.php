@@ -119,7 +119,7 @@ final class DoctrineProjectReadModel implements ProjectReadModel
         $qb = $this->em->createQueryBuilder();
         $qb->select('pe')
             ->from(Project::class, 'p')
-            ->leftJoin(Error::class, 'pe', 'WITH', 'pe.project = p')
+            ->innerJoin(Error::class, 'pe', 'WITH', 'pe.project = p')
             ->where('p = :project')
             ->setParameter('project', $project)
             ->orderBy('pe.occurredAt', 'DESC')
@@ -146,7 +146,7 @@ final class DoctrineProjectReadModel implements ProjectReadModel
         $qb = $this->em->createQueryBuilder();
         $qb->select('COUNT(pe.id) as error_count')
             ->from(Project::class, 'p')
-            ->leftJoin(Error::class, 'pe', 'WITH', 'pe.project = p')
+            ->innerJoin(Error::class, 'pe', 'WITH', 'pe.project = p')
             ->where('p = :project')
             ->setParameter('project', $project);
 
@@ -167,7 +167,7 @@ final class DoctrineProjectReadModel implements ProjectReadModel
             ->addSelect('MONTH(pe.occurredAt) as e_month')
             ->addSelect('DAY(pe.occurredAt) as e_day')
             ->from(Project::class, 'p')
-            ->leftJoin(Error::class, 'pe', 'WITH', 'pe.project = p')
+            ->innerJoin(Error::class, 'pe', 'WITH', 'pe.project = p')
             ->where('p = :project')
             ->setParameter('project', $project)
             ->orderBy('pe.occurredAt', 'ASC')
