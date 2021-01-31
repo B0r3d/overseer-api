@@ -11,6 +11,6 @@ class FutureTimestamp implements Specification
     public function isSatisfiedBy($value): bool
     {
         $now = new \DateTime();
-        return $value > $now;
+        return $value > $now->getTimestamp();
     }
 }

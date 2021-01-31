@@ -58,6 +58,7 @@ services:
     Overseer\Project\Infrastructure\Http\Action\GetProjectErrorsAction:
         parent: Overseer\Shared\Infrastructure\Http\AbstractAction
         public: true
+        arguments: ['@overseer.project.doctrine_project_read_model', '%kernel.project_dir%']
 
     Overseer\Project\Infrastructure\Http\Action\GetProjectErrorAction:
         parent: Overseer\Shared\Infrastructure\Http\AbstractAction

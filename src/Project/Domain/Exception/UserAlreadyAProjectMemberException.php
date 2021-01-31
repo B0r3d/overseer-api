@@ -17,7 +17,7 @@ final class UserAlreadyAProjectMemberException extends ValidationException
 
     public static function withUsername(Username $username)
     {
-        $message = 'User "'. $username->value() . '" is already a project member';
+        $message = 'User "'. $username->getValue() . '" is already a project member';
         return new self($message);
     }
 }

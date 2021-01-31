@@ -214,12 +214,12 @@ final class DoctrineProjectReadModel implements ProjectReadModel
         }
 
         if (!empty($criteria['date_from']) && $criteria['date_from'] instanceof \DateTime) {
-            $qb->where('pe.occurredAt >= :date_from')
+            $qb->andWhere('pe.occurredAt >= :date_from')
                 ->setParameter('date_from', $criteria['date_from']);
         }
 
         if (!empty($criteria['date_to']) && $criteria['date_to'] instanceof \DateTime) {
-            $qb->where('pe.occurredAt <= :date_to')
+            $qb->andWhere('pe.occurredAt <= :date_to')
                 ->setParameter('date_to', $criteria['date_to']);
         }
     }
@@ -234,6 +234,24 @@ final class DoctrineProjectReadModel implements ProjectReadModel
             ->where('pm.username.value = :username')
             ->setParameter('username', $username->getValue())
             ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getAllErrors(string $projectId, string $issuedBy, array $criteria): array
+    {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('pe')
+            ->from(Project::class, 'p')
+            ->leftJoin(Error::class, 'pe', 'WITH', 'pe.project = p')
+            ->where('p = :project')
+            ->setParameter('project', $projectId)
+            ->orderBy('pe.occurredAt', 'DESC')
+        ;
+
+        $this->addGetErrorsQueryCriteria($qb, $criteria);
+
+        return $qb->getQuery()
             ->getResult()
         ;
     }

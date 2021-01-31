@@ -16,6 +16,7 @@ class ProjectMemberInvitationResource implements \JsonSerializable
 
     public function __construct(ProjectMemberInvitation $invitation)
     {
+        $this->id = $invitation->getId()->value();
         $this->username = $invitation->getUsername()->getValue();
         $this->status = $invitation->getStatus()->getValue();
         $this->invitedAt = $invitation->getInvitedAt()->format(\DateTime::ISO8601);

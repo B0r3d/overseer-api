@@ -18,7 +18,7 @@ final class InvitationAlreadySentException extends ValidationException
 
     public static function withUsername(Username $username)
     {
-        $message = 'Invitation already sent to user "'. $username->value() . '"';
+        $message = 'Invitation already sent to user "'. $username->getValue() . '"';
         return new self($message);
     }
 

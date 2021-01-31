@@ -23,4 +23,5 @@ interface ProjectReadModel
     public function countProjectErrors(Project $project, array $criteria = []): int;
     public function getErrorsSummary(Project $project, array $criteria = []): array;
     public function findWhereUserIsAMember(Username $username): array;
+    public function getAllErrors(string $projectId, string $issuedBy, array $criteria): array;
 }
